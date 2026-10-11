@@ -328,13 +328,25 @@ function setHintMode(on){hintMode=!!on;$('hintToggle').textContent='Interações
 function updateSelectionLabel(){ $('selection').textContent = selectedItem ? `Selecionado: ${itemDefs[selectedItem].label}. Clique no local onde deseja usar.` : 'Selecione um item e clique no cenário para usá-lo. No depósito, agora você sai pela vista da porta.'; }
 function sceneSrc(v){
  const src=v.src;
- if(state.location==='quarto' && src==='quarto_02_esquerda.webp' && state.lockerOpen) return 'quarto_02_esquerda_armario_aberto.webp';
- if(state.location==='quarto' && src==='quarto_03_direita.webp' && state.nightstandOpen) return 'quarto_03_direita_criado_mudo_aberto.webp';
+ if(state.location==='quarto' && src==='quarto_02_esquerda.webp' && state.lockerOpen)
+   return state.key?'quarto_02_esquerda_armario_aberto_vazio.webp':'quarto_02_esquerda_armario_aberto.webp';
+ if(state.location==='quarto' && src==='quarto_03_direita.webp' && state.nightstandOpen)
+   return state.note?'quarto_03_direita_criado_mudo_aberto_sem_bilhete.webp':'quarto_03_direita_criado_mudo_aberto.webp';
  if(state.location==='deposito' && src==='deposito_01_frente.webp' && state.powerRestored) return 'deposito_01_frente_painel_ligado.webp';
- if(state.location==='deposito' && src==='deposito_03_direita.webp' && state.benchOpen) return 'deposito_03_direita_gaveta_aberta.webp';
+ if(state.location==='deposito' && src==='deposito_03_direita.webp' && state.benchOpen)
+   return state.maskKey?'deposito_03_direita_gaveta_aberta_sem_chave.webp':'deposito_03_direita_gaveta_aberta.webp';
  if(state.location==='saida' && src==='saida_01_frente.webp' && state.escaped) return 'saida_01_frente_porta_aberta.webp';
  return src;
 }
+const missingVariantFallback={
+ 'quarto_02_esquerda_armario_aberto_vazio.webp':'quarto_02_esquerda_armario_aberto.webp',
+ 'quarto_03_direita_criado_mudo_aberto_sem_bilhete.webp':'quarto_03_direita_criado_mudo_aberto.webp',
+ 'deposito_03_direita_gaveta_aberta_sem_chave.webp':'deposito_03_direita_gaveta_aberta.webp'
+};
+$('scene').addEventListener('error',()=>{
+ const filename=$('scene').src.split('/').pop();
+ if(missingVariantFallback[filename]) $('scene').src='assets/'+missingVariantFallback[filename];
+});
 function inventory(){
  const wrap=$('items');wrap.replaceChildren();const items=[];if(state.note)items.push('note');if(state.key)items.push('key');if(state.metalPiece)items.push('metal');if(state.maskKey)items.push('maskKey');
  if(!items.length){const span=document.createElement('span');span.textContent='Vazio';wrap.append(span)}

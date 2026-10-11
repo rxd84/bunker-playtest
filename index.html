@@ -1,0 +1,550 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>BUNKER — Protótipo 17 — Settings</title><style>
+*{box-sizing:border-box}body{margin:0;background:#080b0c;color:#e6e5db;font-family:Arial,Helvetica,sans-serif;overflow:hidden}button,input{font:inherit}#game{height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px;gap:6px}#top{width:min(100%,calc((100dvh - 190px)*1.777));display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:12px;letter-spacing:.09em;color:#bec1b9;flex-wrap:wrap}#settings{display:flex;align-items:center;gap:9px}#stage{position:relative;width:min(calc(100vw - 16px),calc((100dvh - 190px)*1.777));aspect-ratio:1672/941;max-height:calc(100dvh - 190px);overflow:hidden;background:#181b1a;box-shadow:0 5px 38px #000;border:1px solid #30322c;isolation:isolate;transition:filter .45s ease}#stage img{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;pointer-events:none;user-select:none}#glass{opacity:.45}#clicks{position:absolute;inset:0;z-index:5}.hotspot{position:absolute;border:0;background:transparent;cursor:pointer;padding:0;outline:none}.hotspot:hover,.hotspot:focus-visible{border:0;background:transparent;outline:none}#msg{position:absolute;z-index:10;bottom:11%;left:50%;transform:translateX(-50%);width:max-content;max-width:85%;background:#0c1113e8;border:1px solid #8b7555;padding:11px 16px;text-align:center;line-height:1.45;font-size:clamp(11px,1.2vw,17px);display:none;pointer-events:none}#guide{width:min(100%,calc((100dvh - 190px)*1.777));display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}#nav{display:flex;gap:8px;flex-wrap:wrap}button.ctrl{background:#202825;border:1px solid #52615b;border-radius:5px;color:#f5f3e9;padding:9px 16px;cursor:pointer}button.ctrl:hover{background:#3b4b45}button.ctrl:focus-visible{outline:2px solid #d7ae6c}#hint{font-size:12px;color:#bac0b6;max-width:680px;text-align:right}#modal{position:fixed;inset:0;background:#000b;z-index:40;display:none;align-items:center;justify-content:center;padding:15px}#panel{max-width:440px;background:#161c1c;border:1px solid #9d8059;padding:25px;line-height:1.65;text-align:center}#panel h2{margin-top:0}#panel button{margin-top:10px}#stage:not(.show-helmet) #helmet,#stage:not(.show-helmet) #glass{display:none}#inventory{width:min(100%,calc((100dvh - 190px)*1.777));min-height:82px;background:#111819;border:1px solid #303c3b;display:flex;align-items:center;gap:10px;padding:6px 10px;font-size:12px;color:#aaa99e;flex-wrap:wrap}#inventory strong{letter-spacing:.08em;font-size:11px}#items{display:flex;gap:7px;flex:1;flex-wrap:wrap;align-items:center}.invitem{width:56px;height:56px;padding:0;border:1px solid #6e5b42;border-radius:6px;background:#202624;cursor:pointer;display:grid;place-items:center;position:relative;overflow:hidden}.invitem img{width:44px;height:44px;object-fit:contain;display:block;filter:drop-shadow(0 1px 2px rgba(0,0,0,.5))}.invitem:hover{background:#2c3431;border-color:#b79d73}.invitem.selected{background:#735c39;border-color:#efd3a5;box-shadow:0 0 0 1px #efd3a5 inset}.invitem .label{position:absolute;bottom:2px;left:0;right:0;font-size:9px;letter-spacing:.04em;text-align:center;color:#e8e2d5;text-shadow:0 1px 2px #000;padding:0 2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#progress{color:#c0b8a6;font-size:11px}#selection{font-size:12px;color:#e5cc96;min-height:16px;max-width:420px}#inspect{position:fixed;inset:0;background:#000e;z-index:60;display:none;align-items:center;justify-content:center;padding:18px}#inspect.open{display:flex}#inspector{width:min(820px,95vw);border:1px solid #94764e;background:#151c1c;box-shadow:0 12px 60px #000;padding:16px}#detail{height:min(43vh,380px);background-size:240% auto;background-repeat:no-repeat;background-color:#1a2021;border:1px solid #434d48}#detail.item-preview{background-size:contain!important;background-position:center center!important;background-repeat:no-repeat!important}#inspector h2{margin:12px 0 5px;font-size:20px}#inspectText{line-height:1.6;color:#ddd9ce;margin:0 0 12px}#inspectActions{display:flex;gap:8px;flex-wrap:wrap}#inspectActions button,#closeInspect{background:#2b3633;border:1px solid #7e806c;color:#eee;padding:9px 14px;cursor:pointer;border-radius:4px}#closeInspect{margin-left:auto}#codebox{display:none;gap:7px;flex-wrap:wrap;margin:12px 0}#codebox.visible{display:flex}#codebox input{padding:9px;background:#0b1011;border:1px solid #a38a64;color:#fff;font-size:18px;letter-spacing:.25em;width:120px;text-align:center}#status{color:#ddbc87;font-size:13px;min-height:20px}#stage.transition #scene{animation:fadeIn .22s ease}@keyframes fadeIn{from{opacity:.55}to{opacity:1}}#ending{position:fixed;inset:0;background:linear-gradient(#000d,#000f);z-index:80;display:none;align-items:center;justify-content:center;padding:20px}#ending.open{display:flex}#endingPanel{width:min(720px,96vw);background:#121919;border:1px solid #9d8059;box-shadow:0 15px 70px #000;padding:28px;line-height:1.7;text-align:center}#endingPanel h1{margin:.2em 0 .4em;font-size:clamp(28px,4vw,44px)}#endingPanel p{max-width:58ch;margin:0 auto 14px;color:#e2ded3}#endingActions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:14px}.muted{color:#bcb6a6;font-size:13px}#soundToggle{font-size:11px;padding:6px 9px;border:1px solid #475652;background:#26302e;color:#ddd;cursor:pointer;border-radius:3px}.tiny{font-size:11px;color:#9ba79e}
+#sceneFx{position:absolute;inset:0;z-index:4;pointer-events:none}#objectiveBar{width:min(100%,calc((100dvh - 190px)*1.777));display:flex;align-items:center;gap:10px;padding:8px 10px;background:#101616;border:1px solid #2a3635;color:#ded7c9;font-size:12px}#objectiveBar strong{font-size:11px;letter-spacing:.08em;color:#d4b277}#objectiveText{color:#ece8dd}#hintToggle{font-size:11px;padding:6px 9px;border:1px solid #475652;background:#26302e;color:#ddd;cursor:pointer;border-radius:3px}.hotspot.revealed{border:1px dashed rgba(232,195,111,.88);background:rgba(223,183,88,.12)}.hotspot.revealed::after{content:attr(data-label);position:absolute;left:2px;top:2px;background:rgba(13,18,18,.86);border:1px solid rgba(212,178,119,.7);color:#f2e6ce;font-size:10px;padding:2px 4px;border-radius:3px;white-space:nowrap;max-width:140px;overflow:hidden;text-overflow:ellipsis}.anim-pop{animation:fxPop .32s ease}.door-open-left{animation:doorOpenLeft .42s ease forwards}.door-open-right{animation:doorOpenRight .42s ease forwards}.drawer-slide{animation:drawerSlide .32s ease forwards}.drawer-slide-wide{animation:drawerSlideWide .32s ease forwards}.panel-on{animation:fxGlow .45s ease}@keyframes fxPop{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:scale(1)}}@keyframes doorOpenLeft{from{transform:rotate(0)}to{transform:rotate(-16deg)}}@keyframes doorOpenRight{from{transform:rotate(0)}to{transform:rotate(16deg)}}@keyframes drawerSlide{from{transform:translateY(-8%)}to{transform:translateY(0)}}@keyframes drawerSlideWide{from{transform:translateX(-8%)}to{transform:translateX(0)}}@keyframes fxGlow{from{opacity:.2}to{opacity:1}}.overlay-full{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;pointer-events:none}.fx{position:absolute;pointer-events:none}.scene-item{background-size:contain;background-repeat:no-repeat;background-position:center center;filter:drop-shadow(0 2px 3px rgba(0,0,0,.55))}.locker-door{background:linear-gradient(180deg,#66706e,#3a4342 52%,#202727);border:2px solid rgba(26,26,26,.6);box-shadow:inset 0 0 10px rgba(0,0,0,.35)}.locker-door.left{transform:skewY(1deg) rotate(-12deg);transform-origin:left center}.locker-door.right{transform:skewY(-1deg) rotate(12deg);transform-origin:right center}.locker-key-glow{background:radial-gradient(circle,rgba(245,218,151,.35),rgba(245,218,151,0) 70%)}.drawer-open{background:linear-gradient(180deg,#5b4a40,#2d231f);border:2px solid rgba(20,20,20,.65);border-top-width:4px;box-shadow:0 10px 15px rgba(0,0,0,.25)}.drawer-face{background:linear-gradient(180deg,#746255,#4b3e36);border:2px solid rgba(24,20,18,.55)}.note-peek{background:linear-gradient(180deg,#e6dfc7,#c8c1ab);border:1px solid rgba(90,84,69,.55);transform:rotate(-6deg)}.panel-light{border-radius:50%;box-shadow:0 0 12px rgba(0,0,0,.4)}.panel-light.red{background:#8a241c;box-shadow:0 0 10px rgba(200,40,28,.35)}.panel-light.green{background:#7fd56f;box-shadow:0 0 13px rgba(127,213,111,.65)}.panel-light.amber{background:#d9a84b;box-shadow:0 0 13px rgba(217,168,75,.58)}.drain-piece{transform:rotate(-18deg);opacity:.96}.cabinet-door{background:linear-gradient(180deg,#9ba9ad,#617074);border:2px solid rgba(28,33,36,.6);box-shadow:inset 0 0 10px rgba(0,0,0,.32)}.cabinet-door.open{transform:rotate(-20deg);transform-origin:left center}.door-gap{background:linear-gradient(90deg,rgba(0,0,0,.76),rgba(30,40,42,.2));box-shadow:inset 0 0 8px rgba(0,0,0,.65)}.door-leaf{background:linear-gradient(180deg,#5e6a68,#394140 55%,#242a2a);border:2px solid rgba(26,31,31,.75);box-shadow:0 0 12px rgba(0,0,0,.28)}.door-leaf.open{transform:translateX(-8%) skewY(-1deg)}.small-label{background:rgba(12,17,19,.62);border:1px solid rgba(163,138,100,.5);border-radius:4px;color:#dfd8c8;font-size:10px;display:flex;align-items:center;justify-content:center;padding:2px 4px}@media(max-width:700px){#stage{width:calc(100vw - 12px)}#inventory{width:calc(100vw - 12px)}#top,#guide{width:calc(100vw - 12px)}#detail{height:28vh}#inspector{padding:10px}#hint{text-align:center}#game{padding:5px}button.ctrl{padding:8px 12px}#inventory{min-height:102px}.invitem{width:52px;height:52px}.invitem img{width:40px;height:40px}#objectiveBar{width:calc(100vw - 12px);font-size:11px;padding:7px}}
+/* V09: interface escura, foco na cena, controles discretos */
+body{background:radial-gradient(ellipse at 50% 25%,#1d2421 0%,#060909 78%)}
+#top{padding:7px 10px;background:#111817;border:1px solid #32413d;border-radius:7px}
+#stage{border-radius:6px;border:1px solid #46534b;box-shadow:0 15px 52px #000d}
+#inventory{border-radius:7px;border-color:#3f5048;background:linear-gradient(120deg,#18211e,#0d1514)}
+#guide{padding:4px 2px}#hint{color:#a8b7ac}
+#selection{color:#ddd0ad}button.ctrl{transition:background .15s,border-color .15s}
+#soundToggle{background:#30423a;border-color:#759281;font-weight:bold}
+#stage.transition #scene{animation:fadeIn .40s ease}
+#stage.turn-left #scene{animation:lookLeft .38s ease}
+#stage.turn-right #scene{animation:lookRight .38s ease}
+@keyframes lookLeft{from{opacity:.65;transform:translateX(1.2%) scale(1.012)}to{opacity:1;transform:none}}
+@keyframes lookRight{from{opacity:.65;transform:translateX(-1.2%) scale(1.012)}to{opacity:1;transform:none}}
+.invitem:focus-visible,.hotspot:focus-visible{outline:1px dashed #e1d0a9;outline-offset:1px}
+#inspector{border-radius:8px;background:linear-gradient(145deg,#1a2421,#0f1616)}
+
+/* LIMPEZA VISUAL 15B — SOMENTE ELEMENTOS RISCADOS NA REFERÊNCIA.
+   Os elementos ficam ocultos; os comandos pelo teclado e lógica permanecem funcionais. */
+#top > span,         /* localização/cena */
+#devToggle,          /* botão DEV */
+#settings .tiny,     /* instrução de som */
+#hintToggle,         /* mostrar interações */
+#objectiveBar,       /* barra OBJETIVO */
+#devHelp,            /* painel explicativo do DEV */
+#selection,          /* instruções da seleção do inventário */
+#progress,           /* indicador quarto 0/3 */
+#reset,              /* botão reiniciar */
+#left, #right, #forward, /* botões inferiores de navegação */
+#hint                /* instrução inferior */
+{ display: none !important; }
+/* A área do inventário continua inteiramente funcional.
+   O botão de voltar, existente nos outros ambientes, permanece disponível. */
+
+/* BUNKER 16 — cenário integral, visor sem moldura, HUD flutuante 85% opaco. */
+:root{--hud-edge:clamp(10px,1.2vw,22px);--hud-gap:clamp(12px,1.15vw,24px);--action-slot:clamp(156px,13vw,226px);--hud-h:clamp(94px,12vh,142px)}
+html,body{height:100%;width:100%;margin:0;overflow:hidden;background:#060807}
+#game{position:fixed;inset:0;display:block;width:100vw;height:100dvh;padding:0;margin:0;overflow:hidden}
+#stage{position:absolute;inset:0!important;width:100vw!important;height:100dvh!important;max-height:none!important;aspect-ratio:auto!important;padding:0;margin:0;border:0!important;border-radius:0!important;box-shadow:none!important;overflow:hidden;background:#080b0c}
+#stage img{width:100%;height:100%;object-fit:fill}
+#msg{display:none!important}
+#top{position:fixed;top:var(--hud-edge);left:var(--hud-edge);width:auto;max-width:none;padding:0;border:0;background:none;box-shadow:none;z-index:55}
+#settings{gap:0}
+#soundToggle{font-size:clamp(12px,1.1vw,16px);padding:8px 13px;letter-spacing:0;text-transform:none;color:#eef3ea;background:#283e36e8;border:1px solid #718e80;border-radius:4px;cursor:pointer;box-shadow:0 2px 15px #0009}
+#inventory,#narration{position:fixed;bottom:var(--hud-edge);height:var(--hud-h);width:calc((100vw - (var(--hud-edge) * 2) - var(--action-slot) - (var(--hud-gap) * 2))/2);border:1px solid rgba(84,105,94,.38);border-radius:4px;background:rgba(11,22,20,.85)!important;box-shadow:0 5px 18px #0004;z-index:55;overflow:hidden}
+#inventory{left:var(--hud-edge);padding:12px;display:flex;flex-direction:row;align-items:center;justify-content:flex-start;gap:12px;flex-wrap:nowrap;min-height:0;max-height:none}
+#inventory strong{font-size:clamp(11px,.95vw,15px);color:#d6d1bf;letter-spacing:.07em;white-space:nowrap}
+#items{display:flex;align-items:center;align-content:center;justify-content:flex-start;min-width:0;flex:1;gap:8px;flex-wrap:wrap;overflow-y:auto;max-height:100%;font-size:13px;color:#aab4ac}
+.invitem{width:clamp(40px,4vw,64px);height:clamp(40px,4vw,64px);flex:0 0 auto}
+.invitem img{width:85%;height:85%}
+#narration{right:var(--hud-edge);display:flex;flex-direction:column;align-items:flex-start;justify-content:center;padding:clamp(9px,1.05vw,17px);gap:2px;font-size:clamp(12px,1.05vw,17px);line-height:1.45;color:#ebeae1}
+#narration h2{margin:0;color:#dec18c;font-size:.85em;font-weight:700;letter-spacing:.025em;line-height:1.25}
+#narration h2:empty{display:none}
+#narration p{margin:0;max-width:100%;overflow-y:auto;overflow-wrap:anywhere}
+#inspectText{font-size:inherit;line-height:inherit;max-height:100%;color:inherit}
+#status{font-size:.9em;color:#eabf83;line-height:1.25}
+#status:empty{display:none}
+#interactionHub{position:fixed;left:50%;bottom:var(--hud-edge);transform:translateX(-50%);width:var(--action-slot);max-height:min(57vh,540px);z-index:65;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:8px;pointer-events:none}
+#interactionHub>*{pointer-events:auto}
+#inspectActions{display:flex;flex-direction:column;justify-content:center;gap:7px;width:100%;min-height:0}
+#inspectActions:empty{display:none}
+#inspectActions button,#submitCode{padding:12px 7px;border-radius:4px;background:rgba(37,55,47,.96);color:#f3f1e6;border:1px solid #96a899;box-shadow:0 5px 18px #0009;text-align:center;cursor:pointer;font-size:clamp(11px,1vw,15px);line-height:1.2;transition:background .16s}
+#inspectActions button:hover,#submitCode:hover{background:#3d5a49}
+#codebox{display:none;flex-direction:column;align-items:center;gap:6px;margin:0;width:100%;padding:7px;border-radius:4px;background:#0d1717ed;border:1px solid #67766a}
+#codebox.visible{display:flex}
+#codebox label{text-align:center;font-size:11px;color:#d9d5c8}
+#codebox input{width:100%;background:#071012;color:#fff;border:1px solid #a38a64;padding:8px;font-size:20px;letter-spacing:.12em;text-align:center}
+#codebox button{width:100%;padding:9px}
+#inspect{position:fixed;inset:0;z-index:35;display:none;padding:0;margin:0;align-items:stretch;justify-content:stretch;background:#040706;cursor:zoom-out;border:0;box-shadow:none}
+#inspect.open{display:block}
+#detail{width:100vw;height:100dvh;margin:0;padding:0;border:0;box-shadow:none;border-radius:0;background-size:205% auto;background-position:center center;background-repeat:no-repeat;background-color:#080d0d;transition:none}
+#detail.item-preview{background-size:min(52vh,40vw) auto!important;background-color:rgba(4,9,9,.96)!important;background-position:center center!important}
+/* No frame, toolbar or close button over the close-up. Click the image or press Escape to return. */
+#guide{position:fixed;inset:auto 0 0 0;height:0;padding:0;width:100%}
+#back{display:none!important}
+#modal{display:none!important}
+#ending{z-index:100}
+@media(max-width:840px){:root{--action-slot:clamp(118px,22vw,170px);--hud-h:clamp(96px,17vh,130px)}#inventory{gap:5px;padding:7px;flex-direction:column;align-items:flex-start;justify-content:center}#inventory strong{font-size:10px}#items{gap:4px}.invitem{width:36px;height:36px}#narration{padding:8px;line-height:1.25}#inspectActions button{padding:10px 3px;font-size:11px}#codebox{padding:3px}#codebox label{font-size:10px}}
+@media(max-width:520px){:root{--hud-edge:6px;--hud-gap:5px;--action-slot:100px;--hud-h:108px}#inventory,#narration{width:calc((100vw - 12px - 100px - 10px)/2)}#inventory{padding:5px}#narration{font-size:10px;padding:6px}#inventory strong{font-size:9px}#items{gap:3px}.invitem{width:30px;height:32px}.invitem .label{display:none}#soundToggle{padding:5px 8px;font-size:11px}#inspectActions button{font-size:10px;padding:7px 2px}}
+
+/* Correção 16A: máscara + visor permanecem fixos também durante a inspeção ampliada. */
+#inspect #detail{position:absolute;inset:0;z-index:1;}
+#inspect .zoom-helmet{position:absolute;inset:0;z-index:2;pointer-events:none;}
+#inspect .zoom-helmet[hidden]{display:none!important;}
+#inspect .zoom-helmet img{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;pointer-events:none;user-select:none;}
+#inspect #zoomGlass{opacity:.45;}
+
+
+/* PROTÓTIPO 17 — Configurações isoladas do jogo; escurecimento real de 70%. */
+#gearButton{
+ display:grid;place-items:center;width:43px;height:43px;padding:0;
+ background:rgba(19,33,30,.76);border:1px solid rgba(167,183,160,.63);
+ border-radius:5px;color:#e8e9da;cursor:pointer;
+ box-shadow:0 3px 12px rgba(0,0,0,.38);
+ transition:background .16s ease,transform .16s ease;
+}
+#gearButton:hover{background:rgba(46,68,57,.94);transform:rotate(14deg)}
+#gearButton:focus-visible{outline:2px solid #ecc789;outline-offset:2px}
+.settings-overlay{
+ position:fixed;inset:0;z-index:9999;
+ display:flex;align-items:center;justify-content:center;
+ padding:clamp(14px,3vh,30px);
+ background:rgba(0,0,0,.70);
+ pointer-events:auto;
+}
+.settings-overlay[hidden],.controls-list[hidden]{display:none!important}
+.settings-panel{
+ width:min(510px,100%);max-height:min(91dvh,800px);overflow:auto;
+ border:1px solid rgba(171,161,129,.60);
+ background:linear-gradient(160deg,#202823 0%,#111a18 100%);
+ border-radius:9px;padding:clamp(22px,3vw,32px);
+ box-shadow:0 25px 90px rgba(0,0,0,.8),inset 0 1px rgba(255,255,255,.06);
+ color:#eeeae0;outline:none;font:15px/1.45 Arial,Helvetica,sans-serif;
+}
+.settings-header{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.settings-header-label{display:flex;flex-direction:column;gap:3px}
+.settings-kicker{font-size:10px;letter-spacing:.34em;color:#bca784;font-weight:700}
+#settingsTitle{font-size:clamp(25px,3vw,32px);line-height:1.2;margin:0;font-weight:600;letter-spacing:.02em}
+.settings-close{
+ appearance:none;background:rgba(58,70,63,.48);color:#e8e6dc;
+ border:1px solid #5c6b61;border-radius:4px;
+ cursor:pointer;width:36px;height:36px;line-height:1;font-size:26px;
+}
+.settings-close:hover{background:#415449}
+.settings-divider{border-top:1px solid rgba(142,161,141,.22);margin:20px 0}
+.settings-row{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:54px}
+.settings-row-copy{display:flex;flex-direction:column;gap:4px;text-align:left}
+.settings-row-title{font-size:17px;line-height:1.25;font-weight:600;color:#f3f0e5}
+.settings-row-desc{color:#abb7ac;font-size:12px}
+.settings-sound-toggle{
+ display:flex;align-items:center;gap:13px;padding:7px 2px 7px 10px;
+ border:0;background:transparent;color:#eae5d8;cursor:pointer;min-width:95px;
+ justify-content:flex-end;
+}
+.sound-track{width:42px;height:23px;border:1px solid #6a7870;border-radius:20px;
+ background:#333e39;display:flex;align-items:center;padding:2px;transition:background .2s ease}
+.sound-knob{background:#e6e1d5;border-radius:100%;width:17px;height:17px;transition:transform .2s ease}
+.settings-sound-toggle[aria-checked="true"] .sound-track{background:#557963;border-color:#83ac8e}
+.settings-sound-toggle[aria-checked="true"] .sound-knob{transform:translateX(18px)}
+.settings-restart{cursor:pointer;border:1px solid #987d58;color:#efe7d7;background:#473a2a;
+ border-radius:4px;padding:10px 18px;font-weight:600}
+.settings-restart:hover{background:#655039}
+.settings-controls-toggle{padding:0;width:100%;border:0;background:transparent;color:inherit;
+ display:flex;align-items:center;justify-content:space-between;gap:12px;cursor:pointer}
+#controlsChevron{transition:transform .18s ease;color:#c4b08d;flex:none}
+.settings-controls-toggle[aria-expanded="true"] #controlsChevron{transform:rotate(180deg)}
+.controls-list{margin-top:18px;padding:8px 14px 10px;border-radius:6px;
+ border:1px solid #3b4840;background:rgba(3,8,8,.35)}
+.controls-list>div:not(.controls-subheading){display:flex;align-items:baseline;justify-content:space-between;gap:12px;
+ padding:8px 1px;border-bottom:1px solid #2d3933}
+.controls-list>div:last-child{border-bottom:0}
+.controls-list span{font-size:12px;text-align:right;color:#c3cbbf}
+.controls-list kbd{white-space:nowrap;padding:4px 7px;border:1px solid #5e6c61;border-radius:4px;
+ background:#24312c;font:12px/1.2 Consolas,Monaco,monospace;color:#f0e7d4}
+.controls-subheading{font-size:11px;text-transform:uppercase;letter-spacing:.1em;font-weight:700;
+ padding:17px 2px 6px;color:#c0a77d}
+.settings-footer{margin-top:24px;color:#889b8e;font-size:11px;text-align:center;letter-spacing:.03em}
+.settings-panel button:focus-visible{outline:2px solid #d4b782;outline-offset:3px}
+@media(max-width:520px){
+ .settings-panel{padding:18px}.settings-row-title{font-size:15px}
+ .settings-row-desc{font-size:11px}
+ .controls-list{padding:6px 10px}
+ .controls-list span{font-size:11px}
+}
+</style></head><body><main id="game">
+  <div id="top">
+    <span>BUNKER / <span id="locationname">QUARTO INICIAL</span> / <b id="viewname">FRENTE</b></span>
+    <div id="settings">
+      <button id="devToggle" type="button" title="Ativar/desativar modo de testes (F9)">Dev: OFF [F9]</button>
+      <button id="gearButton" type="button" aria-label="Open Settings" title="Settings" aria-haspopup="dialog" aria-controls="settingsOverlay">
+<svg viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+<path d="M10.35 2.1h3.3l.55 2.18a8.2 8.2 0 0 1 1.72.99l2.13-.66 1.65 2.85-1.58 1.57c.13.64.13 1.32 0 1.96l1.58 1.57-1.65 2.85-2.13-.66c-.5.4-1.08.74-1.72.99l-.55 2.18h-3.3l-.55-2.18a8.2 8.2 0 0 1-1.72-.99l-2.13.66-1.65-2.85 1.58-1.57a8.3 8.3 0 0 1 0-1.96L4.3 7.46l1.65-2.85 2.13.66c.5-.4 1.08-.74 1.72-.99z" transform="translate(0 2)"/>
+<circle cx="12" cy="12" r="3" />
+</svg>
+</button>
+      <span class="tiny">(clique para ativar)</span>
+      <button id="hintToggle" type="button">Interações: ocultas</button>
+    </div>
+  </div>
+  <div id="objectiveBar"><strong>OBJETIVO</strong><span id="objectiveText"></span></div>
+  <div id="stage" class="show-helmet">
+    <img id="scene" alt="Cenário do bunker" src="assets/quarto_01_frente.webp">
+    <img id="glass" alt="" src="assets/capacete_vidro.png">
+    <img id="helmet" alt="" src="assets/capacete_base.png">
+    <div id="sceneFx" aria-hidden="true"></div>
+    <div id="clicks"></div>
+    <div id="msg" aria-live="off"></div>
+  </div>
+  <div id="inspect" role="dialog" aria-modal="true" aria-label="Objeto ampliado"><div id="detail" role="img" aria-label="Detalhe do objeto, toque para se afastar"></div><div id="zoomHelmet" class="zoom-helmet" aria-hidden="true"><img id="zoomGlass" src="assets/capacete_vidro.png" alt=""><img id="zoomHelmetFrame" src="assets/capacete_base.png" alt=""></div></div>
+  <section id="inventory" aria-label="Inventário">
+    <strong>INVENTÁRIO</strong>
+    <div id="items"><span id="empty">Vazio</span></div>
+    <span id="selection"></span><span id="progress"></span>
+    <button class="ctrl" id="reset" title="Reiniciar o progresso">Reiniciar</button>
+  </section>
+  <section id="narration" aria-label="Narração" aria-live="polite">
+    <h2 id="inspectTitle"></h2>
+    <p id="inspectText">Você desperta no bunker. Uma pesada máscara limita sua visão.</p>
+    <p id="status"></p>
+  </section>
+  <div id="interactionHub" aria-label="Ações">
+    <div id="codebox">
+      <label for="code">Código de quatro dígitos</label>
+      <input id="code" maxlength="4" inputmode="numeric" autocomplete="off" placeholder="0000">
+      <button id="submitCode" type="button">Destrancar</button>
+    </div>
+    <div id="inspectActions"></div>
+  </div>
+  <div id="guide">
+    <div id="nav">
+      <button class="ctrl" id="left">← Esquerda</button>
+      <button class="ctrl" id="right">Direita →</button>
+      <button class="ctrl" id="forward">↑ Avançar</button>
+      <button class="ctrl" id="back" type="button" style="display:none">↓ Voltar ao corredor</button>
+    </div>
+    <span id="hint"></span>
+  </div>
+</main>
+<div id="devHelp" style="display:none;position:fixed;top:48px;right:14px;z-index:20;max-width:390px;padding:12px 15px;background:#101917ed;border:1px solid #94764e;color:#ddd;font:12px/1.6 Arial;box-shadow:0 8px 25px #000"><b>MODO DEV — TECLADO NUMÉRICO</b><div>1 Quarto · 2 Corredor · 3 Banheiro · 4 Depósito · 5 Saída</div><div>6 Porta do quarto aberta · 7 Peça metálica · 8 Energia · 9 Chave da máscara · 0 Saída pronta</div></div>
+<div id="modal" role="dialog" aria-modal="true"><div id="panel"><h2>Porta destrancada</h2><p>A porta se abriu.</p><button class="ctrl" id="closeModal">Entrar no corredor</button></div></div>
+<div id="ending" role="dialog" aria-modal="true"><div id="endingPanel"><div class="muted">BUNKER</div><h1>Você escapou.</h1><p>Depois de acordar preso no bunker, encontrar pistas, religar parte da energia e finalmente remover a máscara, você conseguiu destrancar a saída e abrir a porta blindada.</p><div id="endingActions"><button class="ctrl" id="restartEnding">Jogar de novo</button><button class="ctrl" id="closeEnding">Fechar tela final</button></div></div></div>
+<div id="settingsOverlay" class="settings-overlay" role="presentation" hidden>
+  <section id="settingsDialog" class="settings-panel" role="dialog" aria-modal="true"
+    aria-labelledby="settingsTitle" tabindex="-1">
+    <div class="settings-header">
+      <div class="settings-header-label"><span class="settings-kicker">BUNKER</span><h2 id="settingsTitle">Settings</h2></div>
+      <button id="closeSettings" class="settings-close" type="button" aria-label="Close Settings" title="Close (Esc)">&#215;</button>
+    </div>
+    <div class="settings-divider"></div>
+    <div class="settings-row">
+      <div class="settings-row-copy"><span class="settings-row-title">Sound</span><span class="settings-row-desc">Game audio and sound effects</span></div>
+      <button id="settingsSound" class="settings-sound-toggle" type="button" role="switch" aria-checked="false" aria-label="Sound off">
+        <span id="settingsSoundText">Off</span><span class="sound-track"><span class="sound-knob"></span></span>
+      </button>
+    </div>
+    <div class="settings-divider"></div>
+    <div class="settings-row">
+      <div class="settings-row-copy"><span class="settings-row-title">Restart Game</span><span class="settings-row-desc">Start a new game from the beginning</span></div>
+      <button id="settingsRestart" class="settings-restart" type="button">Restart</button>
+    </div>
+    <div class="settings-divider"></div>
+    <button id="controlsToggle" class="settings-controls-toggle" type="button" aria-expanded="false" aria-controls="controlsList">
+      <span class="settings-row-copy"><span class="settings-row-title">Controls</span><span class="settings-row-desc">Keyboard and mouse shortcuts</span></span>
+      <svg id="controlsChevron" viewBox="0 0 24 24" width="19" height="19" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+    </button>
+    <div id="controlsList" class="controls-list" hidden>
+      <div><kbd>←</kbd><span>Look left</span></div>
+      <div><kbd>→</kbd><span>Look right</span></div>
+      <div><kbd>↑</kbd><span>Move forward when possible</span></div>
+      <div><kbd>↓</kbd><span>Return to corridor where available</span></div>
+      <div><kbd>Left click</kbd><span>Inspect an object / select an item / use an item</span></div>
+      <div><kbd>Right click</kbd><span>Inspect inventory item</span></div>
+      <div><kbd>Esc</kbd><span>Leave close-up / close Settings</span></div>
+      <div><kbd>H</kbd><span>Show or hide interactive areas</span></div>
+      <div class="controls-subheading">Developer shortcuts</div>
+      <div><kbd>F9</kbd><span>Toggle test mode</span></div>
+      <div><kbd>Numpad 1–5</kbd><span>Jump to a room (test mode)</span></div>
+      <div><kbd>Numpad 6–0</kbd><span>Load a checkpoint (test mode)</span></div>
+    </div>
+    <div class="settings-footer">Press Esc to resume the game</div>
+  </section>
+</div>
+<script>
+(()=>{
+'use strict';
+const $=id=>document.getElementById(id);
+
+const itemDefs={
+ note:{label:'Bilhete',img:'item_bilhete.png',desc:'“A fechadura do armário ainda usa a hora em que o relógio parou. Quatro números. Não esqueça.”'},
+ key:{label:'Chave',img:'item_chave_quarto.png',desc:'Uma pequena chave industrial, marcada com o símbolo da porta do quarto.'},
+ metal:{label:'Peça',img:'item_peca_metalica.png',desc:'Uma pequena peça metálica retirada do ralo do banheiro. Parece um contato ou ponte condutiva improvisada.'},
+ maskKey:{label:'Máscara',img:'item_chave_mascara.png',desc:'Uma chave especial de manutenção. Deve servir para soltar a trava mecânica da máscara.'}
+};
+
+const roomViews=[
+ {name:'FRENTE — PORTA',src:'quarto_01_frente.webp',spots:[{x:38,y:14,w:24,h:64,t:'Porta de aço',zoom:[50,46],act:'door'},{x:25,y:12,w:12,h:19,t:'Relógio parado',zoom:[33,18],act:'clock'},{x:29,y:30,w:9,h:19,t:'Aviso',zoom:[32,40],act:'warning'},{x:68,y:35,w:9,h:21,t:'Quadro elétrico',zoom:[72,45],act:'panel'}]},
+ {name:'DIREITA — CAMA',src:'quarto_03_direita.webp',spots:[{x:13,y:47,w:49,h:34,t:'Cama',zoom:[38,65],act:'bed'},{x:63,y:53,w:14,h:24,t:'Criado-mudo',zoom:[70,66],act:'nightstand'},{x:2,y:68,w:19,h:25,t:'Caixa metálica',zoom:[13,79],act:'box'},{x:87,y:6,w:12,h:25,t:'Relógio',zoom:[92,17],act:'clock'}]},
+ {name:'ESQUERDA — ARMÁRIO',src:'quarto_02_esquerda.webp',spots:[{x:49,y:16,w:16,h:66,t:'Armário de manutenção',zoom:[57,48],act:'locker'},{x:7,y:7,w:13,h:24,t:'Ventilação',zoom:[14,17],act:'vent'},{x:72,y:29,w:10,h:22,t:'Caixa elétrica',zoom:[76,40],act:'panel'},{x:22,y:2,w:21,h:77,t:'Tubulações',zoom:[32,43],act:'pipes'}]}
+];
+const corridorViews=[
+ {name:'FRENTE — SAÍDA',src:'corredor_01_saida.webp',spots:[{x:39,y:17,w:22,h:58,t:'Saída blindada',zoom:[50,48],act:'exitdoor'},{x:2,y:2,w:17,h:95,t:'Porta do depósito',zoom:[12,49],act:'depotdoor'},{x:82,y:2,w:17,h:95,t:'Porta do banheiro',zoom:[91,49],act:'bathdoor'},{x:63,y:34,w:10,h:24,t:'Painel de manutenção',zoom:[68,45],act:'power'}]},
+ {name:'ATRÁS — QUARTO',src:'corredor_02_quarto.webp',spots:[{x:39,y:18,w:22,h:58,t:'Porta do quarto inicial',zoom:[50,48],act:'roomdoor'},{x:25,y:20,w:12,h:38,t:'Quadro de avisos',zoom:[30,36],act:'notice'},{x:2,y:2,w:17,h:95,t:'Porta lateral',zoom:[12,49],act:'bathdoor'},{x:82,y:2,w:17,h:95,t:'Porta lateral',zoom:[90,46],act:'depotdoor'}]}
+];
+const bathroomViews=[
+ {name:'FRENTE — PIA E ESPELHO',src:'banheiro_01_frente.webp',spots:[{x:0,y:0,w:10,h:100,t:'Voltar ao corredor',zoom:[4,50],act:'returncorridor'},{x:33,y:10,w:34,h:34,t:'Espelho',zoom:[50,27],act:'mirror'},{x:66,y:20,w:17,h:34,t:'Armário de remédios',zoom:[74,34],act:'cabinet'},{x:35,y:45,w:28,h:31,t:'Pia enferrujada',zoom:[49,58],act:'sink'},{x:71,y:75,w:16,h:20,t:'Ralo de chão',zoom:[79,86],act:'drain'}]},
+ {name:'LADO — VASO E RALO',src:'banheiro_02_lado.webp',spots:[{x:0,y:0,w:12,h:100,t:'Voltar ao corredor',zoom:[5,50],act:'returncorridor'},{x:18,y:44,w:18,h:33,t:'Vaso sanitário',zoom:[28,60],act:'toilet'},{x:37,y:61,w:16,h:19,t:'Ralo',zoom:[46,72],act:'drain'},{x:45,y:25,w:16,h:22,t:'Painel de manutenção',zoom:[53,33],act:'hatch'},{x:79,y:18,w:18,h:48,t:'Pia e espelho',zoom:[88,36],act:'sink'}]}
+];
+const depotViews=[
+ {name:'FRENTE — PAINEL PRINCIPAL',src:'deposito_01_frente.webp',spots:[{x:31,y:23,w:42,h:60,t:'Painel principal',zoom:[52,50],act:'mainpanel'},{x:74,y:33,w:16,h:29,t:'Chaves de setor',zoom:[81,45],act:'switches'},{x:77,y:66,w:22,h:29,t:'Bancada',zoom:[90,77],act:'bench'},{x:0,y:55,w:19,h:36,t:'Caixote de ferramentas',zoom:[10,74],act:'fusecrate'}]},
+ {name:'ESQUERDA — ESTANTES E PEÇAS',src:'deposito_02_esquerda.webp',spots:[{x:0,y:0,w:46,h:100,t:'Estantes',zoom:[24,45],act:'shelves'},{x:0,y:61,w:25,h:22,t:'Caixa de peças e fusíveis',zoom:[12,72],act:'fusecrate'},{x:0,y:76,w:22,h:24,t:'Planta sobre a mesa',zoom:[10,86],act:'schematic'},{x:54,y:19,w:31,h:59,t:'Painel principal',zoom:[69,45],act:'mainpanel'}]},
+ {name:'DIREITA — BANCADA E GERADOR',src:'deposito_03_direita.webp',spots:[{x:45,y:41,w:38,h:39,t:'Bancada de manutenção',zoom:[63,60],act:'bench'},{x:79,y:72,w:20,h:25,t:'Gerador auxiliar',zoom:[89,84],act:'generator'},{x:88,y:6,w:12,h:80,t:'Armário gradeado',zoom:[94,45],act:'cage'},{x:0,y:18,w:47,h:61,t:'Painel e comandos',zoom:[22,45],act:'switches'}]},
+ {name:'ATRÁS — PORTA DE ENTRADA',src:'deposito_04_porta.webp',spots:[{x:39,y:16,w:24,h:68,t:'Porta para o corredor',zoom:[50,47],act:'returncorridor'},{x:18,y:36,w:14,h:28,t:'Armário lateral',zoom:[25,47],act:'cage'},{x:70,y:38,w:13,h:25,t:'Canos e válvulas',zoom:[77,48],act:'generator'}]}
+];
+const exitViews=[{name:'FRENTE — PORTA FINAL',src:'saida_01_frente.webp',spots:[{x:0,y:0,w:10,h:100,t:'Voltar ao corredor',zoom:[5,50],act:'returncorridor'},{x:72,y:20,w:22,h:48,t:'Painel de saída',zoom:[83,43],act:'exitpanel'},{x:27,y:43,w:28,h:16,t:'Alavanca principal',zoom:[42,51],act:'exitlever'},{x:20,y:6,w:54,h:82,t:'Porta blindada',zoom:[46,41],act:'exitdoorclose'}]}];
+
+const saveKey='bunker-v16-save';
+let state={location:'quarto',view:0,note:false,key:false,lockerOpen:false,doorOpen:false,boxRead:false,nightstandOpen:false,benchOpen:false,mirrorSeen:false,cabinetSeen:false,metalPiece:false,depotClue:false,powerRestored:false,maskKey:false,maskRemoved:false,exitUnlocked:false,escaped:false};
+try{const saved=JSON.parse(localStorage.getItem(saveKey)||'null');if(saved&&typeof saved==='object')state={...state,...saved};}catch(e){}
+let i=Number.isInteger(state.view)?state.view:0,current=null,msgTimer,selectedItem=null,soundOn=false,audioCtx=null,hintMode=false;
+const persist=()=>{state.view=i;try{localStorage.setItem(saveKey,JSON.stringify(state))}catch(e){}};
+const getViews=()=> state.location==='quarto'?roomViews:state.location==='corredor'?corridorViews:state.location==='banheiro'?bathroomViews:state.location==='deposito'?depotViews:exitViews;
+const locationLabel=()=> ({quarto:'QUARTO INICIAL',corredor:'CORREDOR',banheiro:'BANHEIRO',deposito:'DEPÓSITO ELÉTRICO',saida:'SAÍDA FINAL'})[state.location];
+const areaProgress=()=>{if(state.location==='quarto')return `${Number(state.note)+Number(state.lockerOpen)+Number(state.doorOpen)}/3`;if(state.location==='banheiro')return `${Number(state.mirrorSeen)+Number(state.cabinetSeen)+Number(state.maskRemoved||state.metalPiece)}/3`;if(state.location==='deposito')return `${Number(state.depotClue)+Number(state.powerRestored)+Number(state.maskKey)}/3`;if(state.location==='saida')return state.exitUnlocked?'PRONTA':'BLOQUEADA';return state.powerRestored?'ENERGIA PARCIAL':'BLOQUEADO';};
+
+const soundFiles={click:'click.wav',turn:'turn.wav',pickup:'pickup.wav',unlock:'unlock.wav',door:'door.wav',power:'power.wav',mask:'mask.wav',escape:'escape.wav'};
+const audioPool={};
+for(const [kind,file] of Object.entries(soundFiles)){
+ audioPool[kind]=Array.from({length:3},()=>{const a=new Audio('audio/'+file);a.preload='auto';return a});
+}
+const soundSlot={};
+function primeAudio(){} // Som em arquivo local, iniciado por clique do jogador.
+function playSound(kind){
+ if(!soundOn)return;
+ const arr=audioPool[kind]||audioPool.click;
+ const pos=soundSlot[kind]||0;const a=arr[pos];soundSlot[kind]=(pos+1)%arr.length;
+ try{a.pause();a.currentTime=0;a.volume=(kind==='click'?0.48:0.83);const p=a.play();if(p&&p.catch)p.catch(()=>{});}catch(e){}
+}
+function message(s){$('inspectTitle').textContent='';$('inspectText').textContent=s;$('status').textContent='';$('msg').style.display='none'}
+function objectiveText(){if(!state.key)return 'No quarto, destranque o armário (código 1010) e pegue a chave.'; if(!state.doorOpen)return 'Selecione a chave no inventário e use-a na porta do quarto.'; if(!state.metalPiece)return 'No banheiro, encontre e pegue a peça metálica no ralo.'; if(!state.powerRestored)return 'No depósito, selecione a peça metálica e use-a no painel principal.'; if(!state.maskKey)return 'No depósito, abra a gaveta da bancada e pegue a chave da máscara.'; if(!state.maskRemoved)return 'No banheiro, selecione a chave da máscara e use-a no espelho.'; if(!state.exitUnlocked)return 'Na saída final, libere a tranca no painel lateral.'; if(!state.escaped)return 'Acione a alavanca e abra a porta final para escapar.'; return 'Você escapou. Pode reiniciar ou usar o modo DEV para testar.';}
+function updateObjective(){$('objectiveText').textContent=objectiveText();}
+function setHintMode(on){hintMode=!!on;$('hintToggle').textContent='Interações: '+(hintMode?'visíveis':'ocultas');render();}
+function updateSelectionLabel(){ $('selection').textContent = selectedItem ? `Selecionado: ${itemDefs[selectedItem].label}. Clique no local onde deseja usar.` : 'Selecione um item e clique no cenário para usá-lo. No depósito, agora você sai pela vista da porta.'; }
+function sceneSrc(v){
+ const src=v.src;
+ if(state.location==='quarto' && src==='quarto_02_esquerda.webp' && state.lockerOpen) return 'quarto_02_esquerda_armario_aberto.webp';
+ if(state.location==='quarto' && src==='quarto_03_direita.webp' && state.nightstandOpen) return 'quarto_03_direita_criado_mudo_aberto.webp';
+ if(state.location==='deposito' && src==='deposito_01_frente.webp' && state.powerRestored) return 'deposito_01_frente_painel_ligado.webp';
+ if(state.location==='deposito' && src==='deposito_03_direita.webp' && state.benchOpen) return 'deposito_03_direita_gaveta_aberta.webp';
+ if(state.location==='saida' && src==='saida_01_frente.webp' && state.escaped) return 'saida_01_frente_porta_aberta.webp';
+ return src;
+}
+function inventory(){
+ const wrap=$('items');wrap.replaceChildren();const items=[];if(state.note)items.push('note');if(state.key)items.push('key');if(state.metalPiece)items.push('metal');if(state.maskKey)items.push('maskKey');
+ if(!items.length){const span=document.createElement('span');span.textContent='Vazio';wrap.append(span)}
+ for(const id of items){const data=itemDefs[id];const b=document.createElement('button');b.className='invitem'+(selectedItem===id?' selected':'');b.title=data.label;b.setAttribute('aria-label',data.label);b.innerHTML=`<img src="assets/${data.img}" alt=""><span class="label">${data.label}</span>`;b.onclick=(e)=>{primeAudio();playSound('click');selectedItem=(selectedItem===id?null:id);inventory();};b.oncontextmenu=(e)=>{e.preventDefault();primeAudio();playSound('click');inspectInventory(id)};wrap.append(b)}
+ $('progress').textContent=`${locationLabel().split(' ')[0]} · ${areaProgress()}`; updateSelectionLabel();
+}
+function render(){const available=getViews();i=Math.max(0,Math.min(available.length-1,i));const v=available[i];$('locationname').textContent=locationLabel();$('scene').src='assets/'+sceneSrc(v);$('viewname').textContent=v.name;updateObjective();$('clicks').replaceChildren();$('sceneFx').replaceChildren();$('stage').classList.remove('transition','turn-left','turn-right');void $('stage').offsetWidth;$('stage').classList.add(window.nextTurnClass||'transition');window.nextTurnClass=null;$('stage').classList.toggle('show-helmet',!state.maskRemoved);syncZoomHelmet();renderSceneFx(v);for(const h of v.spots){const b=document.createElement('button');b.className='hotspot'+(hintMode?' revealed':'');b.title='Examinar: '+h.t;b.dataset.label=h.t;b.setAttribute('aria-label','Examinar '+h.t);b.style.zIndex=({exitlever:12,exitpanel:12,exitdoorclose:1,drain:12,schematic:12,fusecrate:11,bench:8,generator:13,mainpanel:5,shelves:1})[h.act]||2;Object.assign(b.style,{left:h.x+'%',top:h.y+'%',width:h.w+'%',height:h.h+'%'});b.onclick=()=>{primeAudio();interact(h,v)};$('clicks').append(b)}inventory();$('back').style.display=['banheiro','saida'].includes(state.location)?'inline-block':'none';if(state.escaped)$('ending').classList.add('open')}
+function renderSceneFx(v){
+ const fx=$('sceneFx');
+ const add=(cls,left,top,width,height,extra='')=>{const d=document.createElement('div');d.className='fx '+cls;d.style.cssText=`left:${left}%;top:${top}%;width:${width}%;height:${height}%;${extra}`;fx.append(d);return d};
+ const addImg=(src,left,top,width,height,extra='')=>{const d=add('scene-item anim-pop',left,top,width,height,extra);d.style.backgroundImage=`url("assets/${src}")`;return d};
+ if(state.location==='quarto' && i===0 && state.doorOpen){add('panel-light green anim-pop',60.5,45.5,1.8,3.2);add('door-gap anim-pop',42.2,16,2.2,61)}
+ if(state.location==='banheiro'){
+   if(i===0){ if(state.cabinetSeen) add('cabinet-door open anim-pop',66.5,20.5,8.5,33); if(!state.metalPiece) addImg('item_peca_metalica.png',75.3,79.5,6.3,8.7,'transform:rotate(-18deg)'); }
+   if(i===1){ if(!state.metalPiece) addImg('item_peca_metalica.png',41.5,65,6,8,'transform:rotate(-18deg)'); }
+ }
+ if(state.location==='corredor' && i===0){ add(`panel-light ${state.powerRestored?'amber':'red'} anim-pop`,68.5,42.8,2,3.4); }
+ if(state.location==='saida' && i===0 && !state.escaped){ add(`panel-light ${state.exitUnlocked?'green':'red'} anim-pop`,82.7,36.3,2.2,3.8); }
+}
+function turn(d){close();window.nextTurnClass=d<0?'turn-left':'turn-right';i=(i+d+getViews().length)%getViews().length;persist();playSound('turn');render();$('msg').style.display='none'}
+function showActions(actions=[]){
+ const a=$('inspectActions');a.replaceChildren();
+ for(const [label,callback] of actions){const b=document.createElement('button');b.type='button';b.textContent=label;b.onclick=(e)=>{e.stopPropagation();primeAudio();callback()};a.append(b)}
+}
+function syncZoomHelmet(){ $('zoomHelmet').hidden=!!state.maskRemoved; }
+function popup(title,body,h,view,actions=[],code=false){
+ current={h,view};$('inspectTitle').textContent=title;$('inspectText').textContent=body;$('status').textContent='';
+ $('codebox').classList.toggle('visible',code);$('code').value='';
+ const detail=$('detail');detail.classList.remove('item-preview');
+ if(view&&h){detail.style.backgroundImage=`url("assets/${sceneSrc(view)}")`;const p=h.zoom||[50,50];detail.style.backgroundPosition=`${p[0]}% ${p[1]}%`;detail.style.backgroundSize=`${h.h>=55?145:h.h>=38?165:h.h>=24?185:220}% auto`;}
+ else{detail.style.backgroundImage=`url("${$('scene').src}")`;detail.style.backgroundPosition='center center';}
+ showActions(actions);syncZoomHelmet();$('inspect').classList.add('open');
+}
+function popupItem(title,body,itemId){
+ current={h:null,view:null};$('inspectTitle').textContent=title;$('inspectText').textContent=body;$('status').textContent='';
+ $('codebox').classList.remove('visible');
+ const detail=$('detail');detail.classList.add('item-preview');detail.style.backgroundImage=`url("assets/${itemDefs[itemId].img}")`;
+ showActions();syncZoomHelmet();$('inspect').classList.add('open');
+}
+function close(){
+ $('inspect').classList.remove('open');$('codebox').classList.remove('visible');showActions();current=null;
+}
+function inspectInventory(id){popupItem(itemDefs[id].label,itemDefs[id].desc,id)}
+function corridorExitText(){if(!state.powerRestored)return 'Uma porta blindada, selada por um sistema eletrônico. O indicador de acesso está apagado. Você ainda não consegue sair.';if(!state.maskRemoved)return 'A energia parcial foi restaurada, mas algo no protocolo parece exigir que você remova a máscara antes de operar o sistema final.';return 'Agora o sistema responde. Você pode se aproximar da porta final e operar o painel de saída.'}
+
+let devMode=false;
+function setDevMode(on){
+ devMode=on;
+ $('devToggle').textContent=on?'Dev: ON [F9]':'Dev: OFF [F9]';
+ $('devToggle').style.borderColor=on?'#e0ba79':'#475652';
+ $('devHelp').style.display=on?'block':'none';
+ message(on?'Modo de testes ativado. Use o teclado numérico de 0 a 9.':'Modo de testes desativado.');
+}
+function devWarp(n){
+ if(!devMode)return;
+ const rooms={1:'quarto',2:'corredor',3:'banheiro',4:'deposito',5:'saida'};
+ if(rooms[n]){
+   if(n===5){state.powerRestored=true;state.maskRemoved=true;state.doorOpen=true}
+   else if(n!==1)state.doorOpen=true;
+   state.escaped=false;
+   $('ending').classList.remove('open');
+   close();$('modal').style.display='none';
+   selectedItem=null;
+   goTo(rooms[n],0);
+   message('DEV: teletransporte para '+locationLabel().toLowerCase()+'.');
+   return;
+ }
+ // Checkpoints cumulativos: cada etapa possui todas as condições anteriores.
+ if(n===6){state.note=true;state.nightstandOpen=true;state.lockerOpen=true;state.key=true;state.doorOpen=true;}
+ if(n===7){state.note=true;state.nightstandOpen=true;state.lockerOpen=true;state.key=true;state.doorOpen=true;state.metalPiece=true;}
+ if(n===8){state.note=true;state.nightstandOpen=true;state.lockerOpen=true;state.key=true;state.doorOpen=true;state.metalPiece=true;state.powerRestored=true;}
+ if(n===9){state.note=true;state.nightstandOpen=true;state.lockerOpen=true;state.key=true;state.doorOpen=true;state.metalPiece=true;state.powerRestored=true;state.benchOpen=true;state.maskKey=true;state.maskRemoved=false;}
+ if(n===0){state.note=true;state.nightstandOpen=true;state.lockerOpen=true;state.key=true;state.doorOpen=true;state.metalPiece=true;state.powerRestored=true;state.benchOpen=true;state.maskKey=true;state.maskRemoved=true;state.exitUnlocked=true;}
+ state.escaped=false;
+ $('ending').classList.remove('open');close();$('modal').style.display='none';selectedItem=null;
+ if(n===6)goTo('quarto',0);
+ if(n===7)goTo('banheiro',1);
+ if(n===8)goTo('deposito',0);
+ if(n===9)goTo('banheiro',0);
+ if(n===0)goTo('saida',0);
+ persist();render();
+ message('DEV: checkpoint '+n+' carregado.');
+}
+
+function goTo(place,index=0){state.location=place;i=index;persist();close();$('modal').style.display='none';selectedItem=null;render();message({quarto:'Você voltou ao quarto inicial.',corredor:'Você entrou no corredor.',banheiro:'Você entrou no banheiro.',deposito:'Você entrou no depósito elétrico.',saida:'Você se aproximou da saída final.'}[place]);}
+function useSelected(targetAct,h,v){
+ if(!selectedItem) return false;
+ if(selectedItem==='key' && targetAct==='door' && !state.doorOpen){state.doorOpen=true;persist();selectedItem=null;playSound('unlock');render();close();message('A chave gira na fechadura. A porta de aço está destrancada.');showActions([['Entrar no corredor',()=>{playSound('door');goTo('corredor',0)}]]);return true}
+ if(selectedItem==='metal' && targetAct==='mainpanel' && !state.powerRestored){state.powerRestored=true;persist();selectedItem=null;playSound('power');inventory();render();popup('Energia parcial restaurada','Os medidores sobem, as chaves respondem e um zumbido percorre o bunker. Você restabeleceu parte da energia.',h,v);return true}
+ if(selectedItem==='maskKey' && targetAct==='mirror' && !state.maskRemoved){state.maskRemoved=true;persist();selectedItem=null;playSound('mask');inventory();$('stage').classList.remove('show-helmet');popup('Máscara removida','Com cuidado, você encaixa a chave na trava lateral e gira. O mecanismo cede com um clique seco. O capacete enfim se solta e sua visão fica livre.',h,v);return true}
+ message(`Não parece ser o lugar certo para usar ${itemDefs[selectedItem].label.toLowerCase()}.`); playSound('click'); return true;
+}
+function showEnding(){state.escaped=true;persist();playSound('escape');render();$('ending').classList.add('open')}
+function interact(h,v){const act=h.act;if(useSelected(act,h,v)) return;
+ if(state.location==='corredor'){
+   if(act==='roomdoor'){playSound('door');goTo('quarto',0);return}
+   if(act==='bathdoor'){playSound('door');goTo('banheiro',0);return}
+   if(act==='depotdoor'){playSound('door');goTo('deposito',0);return}
+   if(act==='exitdoor'){if(state.powerRestored&&state.maskRemoved){popup('Saída de emergência',corridorExitText(),h,v,[['Aproximar-se da saída',()=>{playSound('door');goTo('saida',0)}]]);return}popup('Saída de emergência',corridorExitText(),h,v);return}
+   if(act==='notice'){popup('Quadro de avisos','Alguns papéis danificados mencionam uma rotina de manutenção e uma falha recorrente na linha de ventilação.',h,v);return}
+   if(act==='power'){popup('Painel de manutenção',state.powerRestored?'A luz do painel mudou para âmbar. Parte do sistema voltou a responder.':'A luz do painel está vermelha. Parece aguardar a restauração de energia em outra área do bunker.',h,v);return}
+ }
+ if(state.location==='banheiro'){
+   if(act==='returncorridor'){playSound('door');goTo('corredor',0);return}
+   if(act==='mirror'){state.mirrorSeen=true;persist();inventory();if(state.maskRemoved){popup('Espelho manchado','Sem a máscara, você finalmente vê o próprio rosto: cansado, marcado e confuso — mas livre.',h,v);return}if(state.maskKey){popup('Espelho manchado','A trava lateral da máscara está ao alcance. Selecione a chave da máscara no inventário abaixo e clique novamente no espelho.',h,v);return}popup('Espelho manchado','Pela primeira vez você enxerga melhor a máscara em seu rosto. O visor cobre quase toda a face, e há uma trava mecânica próxima ao pescoço. Sem a chave certa, ela não sai.',h,v);return}
+   if(act==='cabinet'){state.cabinetSeen=true;persist();inventory();popup('Armário de remédios','Frascos vencidos, gaze, comprimidos úmidos e uma caixa vazia. Nada parece imediatamente útil.',h,v);return}
+   if(act==='sink'){popup('Pia enferrujada','A água não corre. Há manchas antigas e o encanamento vibra muito levemente atrás da parede.',h,v);return}
+   if(act==='drain'){if(state.metalPiece){popup('Ralo de chão','Você já retirou a pequena peça metálica presa ali.',h,v)}else popup('Ralo de chão','Há algo pequeno preso na grade do ralo.',h,v,[['Pegar a peça metálica',()=>{state.metalPiece=true;persist();playSound('pickup');inventory();render();popup('Peça metálica coletada','Você soltou uma pequena peça metálica enferrujada. Ela foi para o inventário.',h,v)}]]);return}
+   if(act==='toilet'){popup('Vaso sanitário','Velho, úmido e inutilizado. Felizmente, não há nada escondido nele.',h,v);return}
+   if(act==='hatch'){popup('Painel de manutenção','Uma tampa aparafusada embutida na parede. Talvez se conecte ao sistema de ventilação do bunker.',h,v);return}
+ }
+ if(state.location==='deposito'){
+   if(act==='returncorridor'){playSound('door');goTo('corredor',0);return}
+   if(act==='shelves'){state.depotClue=true;persist();inventory();popup('Estantes de manutenção','Fusíveis, latas, ferramentas e caixas militares. Uma etiqueta velha sugere que um contato reserva foi improvisado anos atrás para religar a ventilação.',h,v);return}
+   if(act==='schematic'){state.depotClue=true;persist();inventory();popup('Esquema elétrico','Um diagrama técnico indica que os setores “GERAL”, “ILUMINAÇÃO” e “VENTILAÇÃO” precisam responder juntos para liberar parte da instalação.',h,v);return}
+   if(act==='fusecrate'){popup('Caixa de peças e fusíveis',state.metalPiece?'Vários fusíveis estão faltando. O encaixe do circuito de ventilação aceitaria uma ponte metálica improvisada — exatamente como a peça que você encontrou no banheiro.':'As caixas estão incompletas. Parece faltar um pequeno contato metálico para recompor um dos circuitos.',h,v);return}
+   if(act==='mainpanel'){if(state.powerRestored){popup('Painel principal','Os setores essenciais já foram religados. Os medidores mostram atividade estável e parte do bunker voltou à vida.',h,v);return}if(state.metalPiece){popup('Painel principal','Há um contato aberto no circuito de ventilação. Selecione a peça metálica no inventário abaixo e clique novamente no painel.',h,v);return}popup('Painel principal','Algo impede a alimentação de um dos setores. Falta uma pequena peça condutiva ou contato de reposição.',h,v);return}
+   if(act==='switches'){popup('Chaves de setor',state.powerRestored?'Os módulos “GERAL”, “ILUMINAÇÃO” e “VENTILAÇÃO” estão energizados. Uma fechadura elétrica próxima à bancada parece ter sido destravada.':'Os três setores principais estão listados aqui, mas sem o circuito completo nada responde como deveria.',h,v);return}
+   if(act==='bench'){if(state.maskKey){popup('Bancada de manutenção','Gavetas, ferramentas e peças soltas. Você já recolheu a chave especial da máscara daqui.',h,v);return}if(state.powerRestored){if(!state.benchOpen){popup('Bancada de manutenção','Com a energia parcial restabelecida, uma pequena trava elétrica cedeu em uma das gavetas.',h,v,[['Abrir a gaveta liberada',()=>{state.benchOpen=true;persist();playSound('unlock');render();popup('Gaveta aberta','A gaveta se abre e revela uma chave especial de manutenção.',h,v,[['Pegar a chave da máscara',()=>{state.maskKey=true;persist();playSound('pickup');inventory();render();popup('Chave da máscara encontrada','Dentro da gaveta havia uma chave especial de manutenção. Ela foi adicionada ao inventário.',h,v)}]])}]])}else{popup('Gaveta aberta','A gaveta se abre e revela uma chave especial de manutenção.',h,v,[['Pegar a chave da máscara',()=>{state.maskKey=true;persist();playSound('pickup');inventory();render();popup('Chave da máscara encontrada','Dentro da gaveta havia uma chave especial de manutenção. Ela foi adicionada ao inventário.',h,v)}]])}return}popup('Bancada de manutenção','A gaveta lateral parece presa por uma tranca elétrica. Talvez algo mude quando o painel principal voltar a funcionar.',h,v);return}
+   if(act==='generator'){popup('Gerador auxiliar',state.powerRestored?'Ele vibra baixo, em espera. A energia parcial do painel parece ter acordado parte do sistema.':'Um gerador portátil antigo ligado a circuitos auxiliares. Está desligado e sem carga suficiente sozinho.',h,v);return}
+   if(act==='cage'){popup('Armário gradeado','O armário está trancado com cadeado e cheio de peças velhas. Nada ali parece prioritário no momento.',h,v);return}
+ }
+ if(state.location==='saida'){
+   if(act==='returncorridor'){playSound('door');goTo('corredor',0);return}
+   if(act==='exitpanel'){if(state.exitUnlocked){popup('Painel de saída','A luz verde indica que a tranca principal já foi liberada. Agora você pode acionar a alavanca da porta.',h,v);return}popup('Painel de saída','O sistema reconhece a energia parcial restaurada. Falta apenas liberar a tranca principal.',h,v,[['Liberar a tranca',()=>{state.exitUnlocked=true;persist();playSound('unlock');inventory();render();popup('Tranca liberada','O painel pisca, a luz verde permanece acesa e a trava principal é liberada com um estalo metálico.',h,v)}]]);return}
+   if(act==='exitlever' || act==='exitdoorclose'){if(!state.exitUnlocked){popup('Porta blindada','A porta ainda está travada pelo painel lateral. Primeiro, libere a tranca no painel de saída.',h,v);return}popup('Porta blindada','Agora a alavanca responde. Você pode finalmente abrir a porta.',h,v,[['Abrir a porta e escapar',()=>{playSound('door');showEnding()}]]);return}
+ }
+ if(act==='clock'){popup('Relógio parado','Os ponteiros estão imóveis em 10h10. Não parece estar funcionando.',h,v);return}
+ if(act==='nightstand'){if(state.note){popup('Criado-mudo','A gaveta está aberta, mas vazia agora.',h,v);return}if(!state.nightstandOpen){popup('Criado-mudo','A gaveta parece emperrada, mas ainda pode ser aberta.',h,v,[['Abrir a gaveta',()=>{state.nightstandOpen=true;persist();playSound('unlock');render();popup('Criado-mudo aberto','Dentro da gaveta há um pedaço de papel dobrado, parcialmente à vista.',h,v,[['Pegar o bilhete',()=>{state.note=true;persist();playSound('pickup');inventory();render();popup('Bilhete encontrado',itemDefs.note.desc,h,v)}]])}]])}else{popup('Criado-mudo aberto','Dentro da gaveta há um pedaço de papel dobrado, parcialmente à vista.',h,v,[['Pegar o bilhete',()=>{state.note=true;persist();playSound('pickup');inventory();render();popup('Bilhete encontrado',itemDefs.note.desc,h,v)}]])}return}
+ if(act==='locker'){if(state.lockerOpen){popup('Armário aberto',state.key?'O armário continua aberto, mas você já recolheu a chave.':'Dentro do armário há uma pequena chave de aço sobre a prateleira.',h,v,state.key?[]:[['Pegar a chave',()=>{state.key=true;persist();playSound('pickup');inventory();render();popup('Chave coletada',itemDefs.key.desc,h,v)}]]);return}popup('Armário trancado','Uma fechadura de combinação com quatro dígitos. O mostrador ainda responde.',h,v,[],true);return}
+ if(act==='door'){if(state.doorOpen){playSound('door');goTo('corredor',0);return}popup('Porta de aço',state.key?'Você possui uma chave. Selecione-a no inventário abaixo e clique novamente na porta.':'A porta está trancada com chave. É preciso encontrar como abri-la.',h,v);return}
+ if(act==='bed'){popup('Cama de metal','O colchão foi usado há pouco tempo. O cobertor está amassado, mas não há nada escondido aqui.',h,v);return}
+ if(act==='box'){state.boxRead=true;persist();popup('Caixa metálica','Dentro há peças enferrujadas e um crachá inutilizado. Nenhuma chave.',h,v);return}
+ const messages={warning:'Um aviso antigo de segurança. Parte do texto foi apagada pelo tempo.',panel:'Os disjuntores estão lacrados. Você ainda não sabe como acessar o sistema.',vent:'Uma corrente fria de ar atravessa a grade. Há algo funcionando fora deste quarto.',pipes:'Os canos estão úmidos e vibram muito levemente.'};popup(h.t,messages[act]||'Nada de especial.',h,v)
+}
+function submit(){if(!current||current.h?.act!=='locker')return;const value=$('code').value.trim();if(value==='1010'){state.lockerOpen=true;persist();playSound('unlock');inventory();render();popup('Armário destrancado','O mecanismo cede com um estalo metálico. Dentro há uma pequena chave de aço.',current.h,current.view,[['Pegar a chave',()=>{state.key=true;persist();playSound('pickup');inventory();render();popup('Chave coletada',itemDefs.key.desc,current.h,current.view)}]])}else $('status').textContent='O código não funcionou. Procure uma pista sobre a combinação.'}
+$('left').onclick=()=>{primeAudio();turn(-1)};$('right').onclick=()=>{primeAudio();turn(1)};$('inspect').onclick=close;$('submitCode').onclick=()=>{primeAudio();submit()};$('code').addEventListener('keydown',e=>{if(e.key==='Enter'){primeAudio();submit()}});$('closeModal').onclick=()=>{primeAudio();playSound('door');goTo('corredor',0)};
+$('forward').onclick=()=>{primeAudio();playSound('click');if(state.location==='quarto'&&i===0){if(state.doorOpen)goTo('corredor',0);else message('A porta está trancada. Examine-a para descobrir como abrir.')}else if(state.location==='corredor'&&i===1){goTo('quarto',0)}else if(state.location==='corredor'&&i===0){if(state.powerRestored&&state.maskRemoved)goTo('saida',0);else message('À frente está a saída final, ainda bloqueada.')}else if(state.location==='banheiro'){message('Não há passagem à frente. Use a porta para voltar ao corredor.')}else if(state.location==='deposito'){message(i===3?'A porta para o corredor está à sua frente. Clique nela para sair.':'Gire até encontrar a porta do depósito ou explore o painel, as estantes e a bancada.')}else if(state.location==='saida'){message('Você já está diante da saída final.')}else message('Não há passagem livre à frente.')};
+$('back').onclick=()=>{primeAudio();playSound('door');selectedItem=null;goTo('corredor',0)};
+$('devToggle').onclick=()=>setDevMode(!devMode);$('hintToggle').onclick=()=>setHintMode(!hintMode);
+// Settings ocupa uma camada modal superior e congela completamente o jogo.
+let settingsOpen = false;
+let lastSettingsFocus = null;
+function updateSoundSetting(){
+ const toggle=$('settingsSound');
+ toggle.setAttribute('aria-checked',String(soundOn));
+ toggle.setAttribute('aria-label',soundOn?'Sound on':'Sound off');
+ $('settingsSoundText').textContent=soundOn?'On':'Off';
+}
+function openSettings(){
+ if(settingsOpen)return;
+ settingsOpen=true;
+ lastSettingsFocus=document.activeElement;
+ $('settingsOverlay').hidden=false;
+ for(const id of ['game','inspect','devHelp','modal','ending']){
+   $(id).inert=true;
+ }
+ $('settingsDialog').focus();
+}
+function closeSettings(){
+ if(!settingsOpen)return;
+ settingsOpen=false;
+ $('settingsOverlay').hidden=true;
+ for(const id of ['game','inspect','devHelp','modal','ending']){
+   $(id).inert=false;
+ }
+ if(lastSettingsFocus && lastSettingsFocus.isConnected)lastSettingsFocus.focus();
+ else $('gearButton').focus();
+}
+function resetGame(){
+ if(!confirm('Restart the game? Your current progress will be lost.'))return;
+ state={location:'quarto',view:0,note:false,key:false,lockerOpen:false,doorOpen:false,boxRead:false,nightstandOpen:false,benchOpen:false,mirrorSeen:false,cabinetSeen:false,metalPiece:false,depotClue:false,powerRestored:false,maskKey:false,maskRemoved:false,exitUnlocked:false,escaped:false};
+ i=0;selectedItem=null;
+ try{localStorage.removeItem(saveKey)}catch(e){}
+ $('ending').classList.remove('open');close();$('modal').style.display='none';
+ render();
+ if(settingsOpen)closeSettings();
+}
+$('gearButton').onclick=openSettings;
+$('closeSettings').onclick=closeSettings;
+$('settingsOverlay').onclick=(e)=>{if(e.target===$('settingsOverlay'))closeSettings();};
+$('settingsSound').onclick=()=>{
+ primeAudio();soundOn=!soundOn;updateSoundSetting();
+ try{localStorage.setItem('bunker-sound-preference',soundOn?'on':'off')}catch(e){}
+ if(soundOn)playSound('pickup');
+};
+$('settingsRestart').onclick=resetGame;
+$('controlsToggle').onclick=()=>{
+ const expanded=$('controlsToggle').getAttribute('aria-expanded')==='true';
+ $('controlsToggle').setAttribute('aria-expanded',String(!expanded));
+ $('controlsList').hidden=expanded;
+};
+try{soundOn=localStorage.getItem('bunker-sound-preference')==='on'}catch(e){}
+updateSoundSetting();
+$('reset').onclick=resetGame;
+$('restartEnding').onclick=()=>{$('ending').classList.remove('open');$('reset').click()};$('closeEnding').onclick=()=>{$('ending').classList.remove('open')};
+document.addEventListener('pointerdown',primeAudio,{passive:true});
+document.addEventListener('keydown',e=>{
+ if(settingsOpen){
+   if(e.key==='Escape'){e.preventDefault();closeSettings();return;}
+   if(e.key==='Tab'){
+     const nodes=[...$('settingsDialog').querySelectorAll('button:not([disabled])')];
+     const currentIndex=nodes.indexOf(document.activeElement);
+     if(e.shiftKey && (currentIndex<=0)){e.preventDefault();nodes[nodes.length-1].focus();}
+     else if(!e.shiftKey && currentIndex===nodes.length-1){e.preventDefault();nodes[0].focus();}
+     return;
+   }
+   // Com o menu aberto, nenhum atalho do jogo pode disparar.
+   if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','F9'].includes(e.key)||e.code.startsWith('Numpad')){
+     e.preventDefault();return;
+   }
+   return;
+ }
+ if(e.code==='F9'){e.preventDefault();setDevMode(!devMode);return;}if((e.key==='h'||e.key==='H')&&!['INPUT','TEXTAREA'].includes(document.activeElement?.tagName)){e.preventDefault();setHintMode(!hintMode);return;}if(devMode&&/^Numpad[0-9]$/.test(e.code)&&!['INPUT','TEXTAREA'].includes(document.activeElement?.tagName)){e.preventDefault();devWarp(Number(e.code.slice(-1)));return;}if($('ending').classList.contains('open')){if(e.key==='Escape')$('ending').classList.remove('open');return}if($('modal').style.display==='flex'){if(e.key==='Escape')$('modal').style.display='none';return}if($('inspect').classList.contains('open')){if(e.key==='Escape')close();return}if(e.key==='ArrowLeft'){primeAudio();turn(-1)}if(e.key==='ArrowRight'){primeAudio();turn(1)}if(e.key==='ArrowUp')$('forward').click();if(e.key==='ArrowDown'&&$('back').style.display!=='none')$('back').click()});
+render();
+})();
+</script></body></html>

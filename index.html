@@ -1,4 +1,4 @@
-<!doctype html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>BUNKER — Protótipo 17 — Settings</title><style>
+<!doctype html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>BUNKER — Protótipo 18 — Drag and Drop</title><style>
 *{box-sizing:border-box}body{margin:0;background:#080b0c;color:#e6e5db;font-family:Arial,Helvetica,sans-serif;overflow:hidden}button,input{font:inherit}#game{height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px;gap:6px}#top{width:min(100%,calc((100dvh - 190px)*1.777));display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:12px;letter-spacing:.09em;color:#bec1b9;flex-wrap:wrap}#settings{display:flex;align-items:center;gap:9px}#stage{position:relative;width:min(calc(100vw - 16px),calc((100dvh - 190px)*1.777));aspect-ratio:1672/941;max-height:calc(100dvh - 190px);overflow:hidden;background:#181b1a;box-shadow:0 5px 38px #000;border:1px solid #30322c;isolation:isolate;transition:filter .45s ease}#stage img{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;pointer-events:none;user-select:none}#glass{opacity:.45}#clicks{position:absolute;inset:0;z-index:5}.hotspot{position:absolute;border:0;background:transparent;cursor:pointer;padding:0;outline:none}.hotspot:hover,.hotspot:focus-visible{border:0;background:transparent;outline:none}#msg{position:absolute;z-index:10;bottom:11%;left:50%;transform:translateX(-50%);width:max-content;max-width:85%;background:#0c1113e8;border:1px solid #8b7555;padding:11px 16px;text-align:center;line-height:1.45;font-size:clamp(11px,1.2vw,17px);display:none;pointer-events:none}#guide{width:min(100%,calc((100dvh - 190px)*1.777));display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}#nav{display:flex;gap:8px;flex-wrap:wrap}button.ctrl{background:#202825;border:1px solid #52615b;border-radius:5px;color:#f5f3e9;padding:9px 16px;cursor:pointer}button.ctrl:hover{background:#3b4b45}button.ctrl:focus-visible{outline:2px solid #d7ae6c}#hint{font-size:12px;color:#bac0b6;max-width:680px;text-align:right}#modal{position:fixed;inset:0;background:#000b;z-index:40;display:none;align-items:center;justify-content:center;padding:15px}#panel{max-width:440px;background:#161c1c;border:1px solid #9d8059;padding:25px;line-height:1.65;text-align:center}#panel h2{margin-top:0}#panel button{margin-top:10px}#stage:not(.show-helmet) #helmet,#stage:not(.show-helmet) #glass{display:none}#inventory{width:min(100%,calc((100dvh - 190px)*1.777));min-height:82px;background:#111819;border:1px solid #303c3b;display:flex;align-items:center;gap:10px;padding:6px 10px;font-size:12px;color:#aaa99e;flex-wrap:wrap}#inventory strong{letter-spacing:.08em;font-size:11px}#items{display:flex;gap:7px;flex:1;flex-wrap:wrap;align-items:center}.invitem{width:56px;height:56px;padding:0;border:1px solid #6e5b42;border-radius:6px;background:#202624;cursor:pointer;display:grid;place-items:center;position:relative;overflow:hidden}.invitem img{width:44px;height:44px;object-fit:contain;display:block;filter:drop-shadow(0 1px 2px rgba(0,0,0,.5))}.invitem:hover{background:#2c3431;border-color:#b79d73}.invitem.selected{background:#735c39;border-color:#efd3a5;box-shadow:0 0 0 1px #efd3a5 inset}.invitem .label{position:absolute;bottom:2px;left:0;right:0;font-size:9px;letter-spacing:.04em;text-align:center;color:#e8e2d5;text-shadow:0 1px 2px #000;padding:0 2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#progress{color:#c0b8a6;font-size:11px}#selection{font-size:12px;color:#e5cc96;min-height:16px;max-width:420px}#inspect{position:fixed;inset:0;background:#000e;z-index:60;display:none;align-items:center;justify-content:center;padding:18px}#inspect.open{display:flex}#inspector{width:min(820px,95vw);border:1px solid #94764e;background:#151c1c;box-shadow:0 12px 60px #000;padding:16px}#detail{height:min(43vh,380px);background-size:240% auto;background-repeat:no-repeat;background-color:#1a2021;border:1px solid #434d48}#detail.item-preview{background-size:contain!important;background-position:center center!important;background-repeat:no-repeat!important}#inspector h2{margin:12px 0 5px;font-size:20px}#inspectText{line-height:1.6;color:#ddd9ce;margin:0 0 12px}#inspectActions{display:flex;gap:8px;flex-wrap:wrap}#inspectActions button,#closeInspect{background:#2b3633;border:1px solid #7e806c;color:#eee;padding:9px 14px;cursor:pointer;border-radius:4px}#closeInspect{margin-left:auto}#codebox{display:none;gap:7px;flex-wrap:wrap;margin:12px 0}#codebox.visible{display:flex}#codebox input{padding:9px;background:#0b1011;border:1px solid #a38a64;color:#fff;font-size:18px;letter-spacing:.25em;width:120px;text-align:center}#status{color:#ddbc87;font-size:13px;min-height:20px}#stage.transition #scene{animation:fadeIn .22s ease}@keyframes fadeIn{from{opacity:.55}to{opacity:1}}#ending{position:fixed;inset:0;background:linear-gradient(#000d,#000f);z-index:80;display:none;align-items:center;justify-content:center;padding:20px}#ending.open{display:flex}#endingPanel{width:min(720px,96vw);background:#121919;border:1px solid #9d8059;box-shadow:0 15px 70px #000;padding:28px;line-height:1.7;text-align:center}#endingPanel h1{margin:.2em 0 .4em;font-size:clamp(28px,4vw,44px)}#endingPanel p{max-width:58ch;margin:0 auto 14px;color:#e2ded3}#endingActions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:14px}.muted{color:#bcb6a6;font-size:13px}#soundToggle{font-size:11px;padding:6px 9px;border:1px solid #475652;background:#26302e;color:#ddd;cursor:pointer;border-radius:3px}.tiny{font-size:11px;color:#9ba79e}
 #sceneFx{position:absolute;inset:0;z-index:4;pointer-events:none}#objectiveBar{width:min(100%,calc((100dvh - 190px)*1.777));display:flex;align-items:center;gap:10px;padding:8px 10px;background:#101616;border:1px solid #2a3635;color:#ded7c9;font-size:12px}#objectiveBar strong{font-size:11px;letter-spacing:.08em;color:#d4b277}#objectiveText{color:#ece8dd}#hintToggle{font-size:11px;padding:6px 9px;border:1px solid #475652;background:#26302e;color:#ddd;cursor:pointer;border-radius:3px}.hotspot.revealed{border:1px dashed rgba(232,195,111,.88);background:rgba(223,183,88,.12)}.hotspot.revealed::after{content:attr(data-label);position:absolute;left:2px;top:2px;background:rgba(13,18,18,.86);border:1px solid rgba(212,178,119,.7);color:#f2e6ce;font-size:10px;padding:2px 4px;border-radius:3px;white-space:nowrap;max-width:140px;overflow:hidden;text-overflow:ellipsis}.anim-pop{animation:fxPop .32s ease}.door-open-left{animation:doorOpenLeft .42s ease forwards}.door-open-right{animation:doorOpenRight .42s ease forwards}.drawer-slide{animation:drawerSlide .32s ease forwards}.drawer-slide-wide{animation:drawerSlideWide .32s ease forwards}.panel-on{animation:fxGlow .45s ease}@keyframes fxPop{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:scale(1)}}@keyframes doorOpenLeft{from{transform:rotate(0)}to{transform:rotate(-16deg)}}@keyframes doorOpenRight{from{transform:rotate(0)}to{transform:rotate(16deg)}}@keyframes drawerSlide{from{transform:translateY(-8%)}to{transform:translateY(0)}}@keyframes drawerSlideWide{from{transform:translateX(-8%)}to{transform:translateX(0)}}@keyframes fxGlow{from{opacity:.2}to{opacity:1}}.overlay-full{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;pointer-events:none}.fx{position:absolute;pointer-events:none}.scene-item{background-size:contain;background-repeat:no-repeat;background-position:center center;filter:drop-shadow(0 2px 3px rgba(0,0,0,.55))}.locker-door{background:linear-gradient(180deg,#66706e,#3a4342 52%,#202727);border:2px solid rgba(26,26,26,.6);box-shadow:inset 0 0 10px rgba(0,0,0,.35)}.locker-door.left{transform:skewY(1deg) rotate(-12deg);transform-origin:left center}.locker-door.right{transform:skewY(-1deg) rotate(12deg);transform-origin:right center}.locker-key-glow{background:radial-gradient(circle,rgba(245,218,151,.35),rgba(245,218,151,0) 70%)}.drawer-open{background:linear-gradient(180deg,#5b4a40,#2d231f);border:2px solid rgba(20,20,20,.65);border-top-width:4px;box-shadow:0 10px 15px rgba(0,0,0,.25)}.drawer-face{background:linear-gradient(180deg,#746255,#4b3e36);border:2px solid rgba(24,20,18,.55)}.note-peek{background:linear-gradient(180deg,#e6dfc7,#c8c1ab);border:1px solid rgba(90,84,69,.55);transform:rotate(-6deg)}.panel-light{border-radius:50%;box-shadow:0 0 12px rgba(0,0,0,.4)}.panel-light.red{background:#8a241c;box-shadow:0 0 10px rgba(200,40,28,.35)}.panel-light.green{background:#7fd56f;box-shadow:0 0 13px rgba(127,213,111,.65)}.panel-light.amber{background:#d9a84b;box-shadow:0 0 13px rgba(217,168,75,.58)}.drain-piece{transform:rotate(-18deg);opacity:.96}.cabinet-door{background:linear-gradient(180deg,#9ba9ad,#617074);border:2px solid rgba(28,33,36,.6);box-shadow:inset 0 0 10px rgba(0,0,0,.32)}.cabinet-door.open{transform:rotate(-20deg);transform-origin:left center}.door-gap{background:linear-gradient(90deg,rgba(0,0,0,.76),rgba(30,40,42,.2));box-shadow:inset 0 0 8px rgba(0,0,0,.65)}.door-leaf{background:linear-gradient(180deg,#5e6a68,#394140 55%,#242a2a);border:2px solid rgba(26,31,31,.75);box-shadow:0 0 12px rgba(0,0,0,.28)}.door-leaf.open{transform:translateX(-8%) skewY(-1deg)}.small-label{background:rgba(12,17,19,.62);border:1px solid rgba(163,138,100,.5);border-radius:4px;color:#dfd8c8;font-size:10px;display:flex;align-items:center;justify-content:center;padding:2px 4px}@media(max-width:700px){#stage{width:calc(100vw - 12px)}#inventory{width:calc(100vw - 12px)}#top,#guide{width:calc(100vw - 12px)}#detail{height:28vh}#inspector{padding:10px}#hint{text-align:center}#game{padding:5px}button.ctrl{padding:8px 12px}#inventory{min-height:102px}.invitem{width:52px;height:52px}.invitem img{width:40px;height:40px}#objectiveBar{width:calc(100vw - 12px);font-size:11px;padding:7px}}
 /* V09: interface escura, foco na cena, controles discretos */
@@ -164,6 +164,9 @@ html,body{height:100%;width:100%;margin:0;overflow:hidden;background:#060807}
  .controls-list{padding:6px 10px}
  .controls-list span{font-size:11px}
 }
+
+/* BUNKER 18 */
+.scene-pickup{position:absolute;display:block;padding:0;border:0;background:transparent;cursor:pointer;pointer-events:auto} .scene-pickup:focus-visible{outline:1px solid #c9ad73} .invitem.dragging{opacity:.4} .hotspot.can-drop{box-shadow:inset 0 0 0 2px rgba(172,210,142,.65)} #zoomPickups{position:absolute;inset:0;z-index:3;pointer-events:none} #zoomPickups .scene-pickup{pointer-events:auto}
 </style></head><body><main id="game">
   <div id="top">
     <span>BUNKER / <span id="locationname">QUARTO INICIAL</span> / <b id="viewname">FRENTE</b></span>
@@ -250,7 +253,8 @@ html,body{height:100%;width:100%;margin:0;overflow:hidden;background:#060807}
       <div><kbd>→</kbd><span>Look right</span></div>
       <div><kbd>↑</kbd><span>Move forward when possible</span></div>
       <div><kbd>↓</kbd><span>Return to corridor where available</span></div>
-      <div><kbd>Left click</kbd><span>Inspect an object / select an item / use an item</span></div>
+      <div><kbd>Left click</kbd><span>Inspect objects and collect revealed items</span></div>
+      <div><kbd>Drag item</kbd><span>Drop an inventory item onto its target</span></div>
       <div><kbd>Right click</kbd><span>Inspect inventory item</span></div>
       <div><kbd>Esc</kbd><span>Leave close-up / close Settings</span></div>
       <div><kbd>H</kbd><span>Show or hide interactive areas</span></div>
@@ -545,6 +549,185 @@ document.addEventListener('keydown',e=>{
    return;
  }
  if(e.code==='F9'){e.preventDefault();setDevMode(!devMode);return;}if((e.key==='h'||e.key==='H')&&!['INPUT','TEXTAREA'].includes(document.activeElement?.tagName)){e.preventDefault();setHintMode(!hintMode);return;}if(devMode&&/^Numpad[0-9]$/.test(e.code)&&!['INPUT','TEXTAREA'].includes(document.activeElement?.tagName)){e.preventDefault();devWarp(Number(e.code.slice(-1)));return;}if($('ending').classList.contains('open')){if(e.key==='Escape')$('ending').classList.remove('open');return}if($('modal').style.display==='flex'){if(e.key==='Escape')$('modal').style.display='none';return}if($('inspect').classList.contains('open')){if(e.key==='Escape')close();return}if(e.key==='ArrowLeft'){primeAudio();turn(-1)}if(e.key==='ArrowRight'){primeAudio();turn(1)}if(e.key==='ArrowUp')$('forward').click();if(e.key==='ArrowDown'&&$('back').style.display!=='none')$('back').click()});
+/* BUNKER 18: arrastar itens, clicar nas gavetas e recolher objetos no próprio cenário. */
+const prevRender = render;
+const prevPopup = popup;
+const prevInteract = interact;
+const pickupData = {
+  key: {label:'chave',title:'Chave de aço',desc:'Você recolheu a chave de aço do armário.'},
+  note: {label:'bilhete',title:'Bilhete encontrado',desc:itemDefs.note.desc},
+  metal: {label:'peça metálica',title:'Peça metálica',desc:'Você retirou a peça metálica do ralo.'},
+  maskKey: {label:'chave da máscara',title:'Chave especial',desc:'Você recolheu a chave de manutenção da máscara.'}
+};
+const obtained = id => id==='key'?state.key:id==='note'?state.note:id==='metal'?state.metalPiece:state.maskKey;
+const usable = id => id==='key'?state.key&&!state.doorOpen:id==='metal'?state.metalPiece&&!state.powerRestored:id==='maskKey'?state.maskKey&&!state.maskRemoved:false;
+let draggingItem=null;
+function narrate(title, description){$('inspectTitle').textContent=title;$('inspectText').textContent=description;$('status').textContent='';}
+function pickupSpots(view){
+  if(state.location==='quarto' && view.src==='quarto_02_esquerda.webp' && state.lockerOpen && !state.key)
+    return [{id:'key',x:52.5,y:46,w:8,h:11,source:'locker'}];
+  if(state.location==='quarto' && view.src==='quarto_03_direita.webp' && state.nightstandOpen && !state.note)
+    return [{id:'note',x:69,y:56,w:7,h:11,source:'nightstand'}];
+  if(state.location==='banheiro' && !state.metalPiece){
+    if(view.src==='banheiro_01_frente.webp')return [{id:'metal',x:73,y:76,w:13,h:17,source:'drain'}];
+    if(view.src==='banheiro_02_lado.webp')return [{id:'metal',x:39,y:61,w:13,h:16,source:'drain'}];
+  }
+  if(state.location==='deposito' && view.src==='deposito_03_direita.webp' && state.benchOpen && !state.maskKey)
+    return [{id:'maskKey',x:68,y:65,w:13,h:12,source:'bench'}];
+  return [];
+}
+function collectItem(id){
+ if(obtained(id))return;
+ if(id==='key')state.key=true;
+ if(id==='note')state.note=true;
+ if(id==='metal')state.metalPiece=true;
+ if(id==='maskKey')state.maskKey=true;
+ persist();playSound('pickup');close();render();narrate(pickupData[id].title,pickupData[id].desc);
+}
+function makePickupButton(info){
+ const button=document.createElement('button');
+ button.type='button';button.className='scene-pickup';
+ button.setAttribute('aria-label','Pegar '+pickupData[info.id].label);
+ button.title='Pegar '+pickupData[info.id].label;
+ button.onclick=e=>{e.preventDefault();e.stopPropagation();primeAudio();collectItem(info.id)};
+ return button;
+}
+function setDropHandlers(el,h,v){
+ el.addEventListener('dragover',e=>{if(!draggingItem)return;e.preventDefault();e.dataTransfer.dropEffect='move';el.classList.toggle('can-drop',validCombination(draggingItem,h.act));});
+ el.addEventListener('dragleave',()=>el.classList.remove('can-drop'));
+ el.addEventListener('drop',e=>{e.preventDefault();e.stopPropagation();el.classList.remove('can-drop');if(draggingItem)useDraggedItem(draggingItem,h.act,h,v)});
+}
+function validCombination(item,act){return (item==='key'&&act==='door'&&!state.doorOpen)||(item==='metal'&&act==='mainpanel'&&!state.powerRestored)||(item==='maskKey'&&act==='mirror'&&!state.maskRemoved);}
+function useDraggedItem(item,act,h,v){
+ if(!obtained(item)||!usable(item))return;
+ draggingItem=null;
+ if(!validCombination(item,act)) {narrate('Não funciona','Este item não pode ser usado aqui.');playSound('click');return;}
+ if(item==='key'){
+   state.doorOpen=true;persist();playSound('unlock');close();render();
+   narrate('Porta destrancada','A chave gira na fechadura e fica presa no mecanismo. Agora clique na porta para atravessá-la.');
+ }else if(item==='metal'){
+   state.powerRestored=true;persist();playSound('power');close();render();
+   narrate('Energia restaurada','A peça se encaixa no painel. Os medidores acendem e o circuito do bunker volta a funcionar.');
+ }else if(item==='maskKey'){
+   state.maskRemoved=true;persist();playSound('mask');close();render();
+   narrate('Capacete removido','A chave destrava o mecanismo lateral. O capacete se solta e você finalmente recupera a visão livre.');
+ }
+}
+function addScenePickups(v){
+ const clicks=$('clicks');
+ const oldButtons=[...clicks.querySelectorAll('.hotspot')];
+ oldButtons.forEach((el,index)=>setDropHandlers(el,v.spots[index],v));
+ clicks.ondragover=e=>{if(draggingItem){e.preventDefault();e.dataTransfer.dropEffect='move'}};
+ clicks.ondrop=e=>{
+   if(!draggingItem)return;
+   e.preventDefault();const rect=clicks.getBoundingClientRect();
+   const x=(e.clientX-rect.left)/rect.width*100,y=(e.clientY-rect.top)/rect.height*100;
+   const target=[...v.spots].reverse().find(p=>x>=p.x&&x<=p.x+p.w&&y>=p.y&&y<=p.y+p.h);
+   useDraggedItem(draggingItem,target?.act||null,target,v);
+ };
+ for(const p of pickupSpots(v)){
+   const b=makePickupButton(p);b.style.cssText=`left:${p.x}%;top:${p.y}%;width:${p.w}%;height:${p.h}%;z-index:40`;
+   clicks.append(b);
+ }
+}
+function addZoomPickups(){
+ let layer=$('zoomPickups');
+ if(!layer){layer=document.createElement('div');layer.id='zoomPickups';$('inspect').append(layer)}
+ layer.replaceChildren();
+ if(!$('inspect').classList.contains('open')||!current?.h||!current.view)return;
+ const info=pickupSpots(current.view).find(p=>p.source===current.h.act);
+ if(!info)return;
+ const zoom=$('detail'), rect=zoom.getBoundingClientRect(),h=current.h;
+ const pct=h.h>=55?1.45:h.h>=38?1.65:h.h>=24?1.85:2.20;
+ const wide=rect.width*pct, high=wide*(941/1672),position=h.zoom||[50,50];
+ const offsetX=(rect.width-wide)*position[0]/100,offsetY=(rect.height-high)*position[1]/100;
+ const px=offsetX+(info.x/100)*wide,py=offsetY+(info.y/100)*high;
+ const w=Math.max(44,(info.w/100)*wide),hh=Math.max(40,(info.h/100)*high);
+ const b=makePickupButton(info);
+ b.style.cssText=`left:${Math.max(0,px)}px;top:${Math.max(0,py)}px;width:${w}px;height:${hh}px;`;
+ layer.append(b);
+}
+function collectOnClick(act){
+ if(act==='nightstand'){
+   if(!state.nightstandOpen){state.nightstandOpen=true;persist();playSound('unlock');render();}
+   popup('Criado-mudo',state.note?'A gaveta está aberta e vazia.':'Você abre a gaveta. Há um bilhete dobrado dentro; clique nele para recolher.',
+     getViews()[i].spots.find(p=>p.act===act),getViews()[i]);return true;
+ }
+ if(act==='bench'){
+   if(!state.powerRestored){popup('Gaveta bloqueada','A trava elétrica não funciona. É preciso restaurar a energia primeiro.',getViews()[i].spots.find(p=>p.act===act),getViews()[i]);return true;}
+   if(!state.benchOpen){state.benchOpen=true;persist();playSound('unlock');render();}
+   popup('Bancada',state.maskKey?'A gaveta está aberta, sem nada de útil.':'A trava se solta. Você abre a gaveta e vê uma chave de manutenção; clique nela para recolher.',
+     getViews()[i].spots.find(p=>p.act===act),getViews()[i]);return true;
+ }
+ return false;
+}
+// Retira a seleção por clique. Itens usados devem ser arrastados sobre o cenário.
+inventory=function(){
+ const wrap=$('items');wrap.replaceChildren();
+ const ids=[];if(state.note)ids.push('note');if(usable('key'))ids.push('key');if(usable('metal'))ids.push('metal');if(usable('maskKey'))ids.push('maskKey');
+ if(ids.length===0){const s=document.createElement('span');s.textContent='Vazio';wrap.append(s)}
+ ids.forEach(id=>{
+   const item=itemDefs[id],b=document.createElement('button');
+   b.type='button';b.className='invitem';b.title=item.label+(id==='note'?' — Ler':' — Arraste para usar');
+   b.setAttribute('aria-label',item.label);b.draggable=id!=='note';
+   b.innerHTML=`<img src="assets/${item.img}" alt="" draggable="false"><span class="label">${item.label}</span>`;
+   b.onclick=()=>{primeAudio();if(id==='note'){inspectInventory(id)}else{narrate('Usar '+item.label,'Arraste este item até o lugar onde deseja utilizá-lo e solte o botão do mouse.');}};
+   b.oncontextmenu=e=>{e.preventDefault();primeAudio();inspectInventory(id)};
+   b.ondragstart=e=>{draggingItem=id;e.dataTransfer.setData('text/plain',id);e.dataTransfer.effectAllowed='move';b.classList.add('dragging')};
+   b.ondragend=()=>{draggingItem=null;b.classList.remove('dragging');document.querySelectorAll('.can-drop').forEach(x=>x.classList.remove('can-drop'));};
+   wrap.append(b);
+ });
+ $('selection').textContent='';$('progress').textContent=`${locationLabel().split(' ')[0]} · ${areaProgress()}`;
+};
+render=function(){prevRender();addScenePickups(getViews()[i]);};
+popup=function(...args){prevPopup(...args);addZoomPickups();};
+window.addEventListener('resize',()=>{if($('inspect').classList.contains('open'))addZoomPickups()});
+// Nenhuma ação comum depende mais de botões flutuantes (exceto digitar o código).
+showActions=function(){ $('inspectActions').replaceChildren(); };
+useSelected=function(){return false};
+submit=function(){
+ if(!current||current.h?.act!=='locker')return;
+ const code=$('code').value.trim();
+ if(code==='1010'){
+   const h=current.h,v=current.view;
+   state.lockerOpen=true;persist();playSound('unlock');render();
+   popup('Armário aberto','A combinação funciona. A porta do armário se abre e revela uma chave de aço. Clique na chave para recolher.',h,v);
+ }else $('status').textContent='Código incorreto. Procure uma pista no quarto.';
+};
+interact=function(h,v){
+ const act=h.act;
+ if(act==='nightstand'||act==='bench'){collectOnClick(act);return;}
+ if(act==='locker'){
+   if(state.lockerOpen){popup('Armário aberto',state.key?'Você já pegou a chave.':'Uma chave de aço está sobre a prateleira. Clique nela para recolher.',h,v);return;}
+   popup('Armário trancado','Um mecanismo de combinação de quatro dígitos impede a abertura.',h,v,[],true);return;
+ }
+ if(act==='drain'){
+   popup('Ralo',state.metalPiece?'O ralo está vazio.':'Você encontrou uma pequena peça metálica presa à grade. Clique nela para recolher.',h,v);return;
+ }
+ if(act==='door'&&!state.doorOpen){popup('Porta de aço',state.key?'Arraste a chave do inventário até a fechadura da porta.':'Esta porta está trancada. É preciso encontrar uma chave.',h,v);return;}
+ if(act==='mainpanel'){
+   popup('Painel elétrico',state.powerRestored?'Os circuitos estão funcionando.':state.metalPiece?'Arraste a peça metálica do inventário até o painel.':'Falta um contato condutor para religar o circuito.',h,v);return;
+ }
+ if(act==='mirror'){
+   state.mirrorSeen=true;persist();
+   popup('Espelho',state.maskRemoved?'Você vê seu rosto sem o capacete.':state.maskKey?'Arraste a chave especial do inventário até o espelho para soltar a máscara.':'Há uma trava mecânica na lateral do seu capacete. Talvez exista uma chave especial.',h,v);return;
+ }
+ if(state.location==='corredor'&&act==='exitdoor'&&state.powerRestored&&state.maskRemoved){playSound('door');goTo('saida',0);return;}
+ if(state.location==='saida'&&act==='exitpanel'){
+   if(!state.exitUnlocked){state.exitUnlocked=true;persist();playSound('unlock');render();}
+   popup('Tranca da saída','O controle libera a tranca principal. Clique na alavanca da porta.',h,v);return;
+ }
+ if(state.location==='saida'&&(act==='exitlever'||act==='exitdoorclose')){
+   if(state.exitUnlocked){playSound('door');showEnding();}
+   else popup('Porta blindada','A porta ainda está bloqueada. Clique primeiro no painel lateral.',h,v);
+   return;
+ }
+ prevInteract(h,v);
+};
+// O jogador pode arrastar também sobre o objeto ampliado, sem remover o visor.
+$('inspect').addEventListener('dragover',e=>{if(draggingItem){e.preventDefault();e.dataTransfer.dropEffect='move'}});
+$('inspect').addEventListener('drop',e=>{if(!draggingItem)return;e.preventDefault();e.stopPropagation();useDraggedItem(draggingItem,current?.h?.act||null,current?.h,current?.view)});
+
 render();
 })();
 </script></body></html>
